@@ -1,5 +1,6 @@
 package com.resnik.math.linear.array
 
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -16,6 +17,8 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
 
     fun w(): Double = this[3]
 
+    operator fun plus(other: ArrayVector) : ArrayPoint = other + this
+
     operator fun minus(other: ArrayPoint) : ArrayVector = ArrayVector(*values.zip(other.values) { a, b -> a - b }.toDoubleArray())
 
     open fun distanceTo(other: ArrayPoint): Double = (this - other).magnitude()
@@ -25,11 +28,11 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
                 sqrt((p2.x() - p1.x()).pow(2.0) + (p2.y() - p1.y()).pow(2.0))
     }
 
-    fun leftOf(p1: ArrayPoint, p2: ArrayPoint): Boolean {
-        return compareTo(p1, p2) == +1
-    }
+    fun leftOf(p1: ArrayPoint, p2: ArrayPoint): Boolean = (compareTo(p1, p2) == +1)
 
     fun toVector() : ArrayVector = ArrayVector(*this.values)
+
+    fun toVector3d() : ArrayVector = ArrayVector(*DoubleArray(3){if (it < values.size) values[it] else 0.0})
 
     fun cross(p1: ArrayPoint, p2: ArrayPoint) : Double {
         val thisX = this.x()
@@ -42,6 +45,8 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
     }
 
     fun to2d() : ArrayPoint2d = ArrayPoint2d(x(), y())
+
+    fun to3d() : ArrayPoint3d = ArrayPoint3d(x(), y(), z())
 
     override fun compareTo(other: ArrayPoint): Int {
         values.forEachIndexed{ index, value ->
@@ -73,6 +78,16 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
     override fun hashCode(): Int = values.contentHashCode()
 
     override fun toString(): String = "(${values.contentToString()})"
+
+    companion object {
+
+        private val random : Random = Random()
+
+        fun randomGaussian(size: Int) : ArrayPoint {
+            return ArrayPoint(*DoubleArray(size){ random.nextGaussian()})
+        }
+
+    }
 
 }
 

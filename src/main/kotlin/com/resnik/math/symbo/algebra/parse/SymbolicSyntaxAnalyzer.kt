@@ -101,7 +101,7 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
                     if (tokenSet.type !== SymbolicTokenSetType.PARENTHESES) {
                         continue
                     }
-                    if (tokenSet.startIndex === expectedIndex) {
+                    if (tokenSet.startIndex == expectedIndex) {
                         found = tokenSet
                         break
                     }
@@ -161,7 +161,7 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
         fun genIntermediateOperation(inputList: List<Token<SymbolicTokenType?>>): SymbolicIntermediateOperation? {
             val tokenSets: List<SymbolicTokenSet> = genTokenSets(inputList)
             val symbolicIntermediateOperations: List<SymbolicIntermediateOperation> = genIntermediateOperations(tokenSets)
-            val operators: List<SymbolicIntermediateOperation> = generateIntermediateOperators(symbolicIntermediateOperations, tokenSets, inputList)
+            val operators: List<SymbolicIntermediateOperation> = generateIntermediateOperators(symbolicIntermediateOperations, inputList)
             return if (operators.size == 1) {
                 operators[0]
             } else null
@@ -182,16 +182,16 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
             return retList
         }
 
-        fun generateIntermediateOperators(curr: List<SymbolicIntermediateOperation>, tokenSets: List<SymbolicTokenSet>, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
-            val ident: List<SymbolicIntermediateOperation> = generateIdentities(curr, tokenSets, inputList)
-            val powers: List<SymbolicIntermediateOperation> = generatePowerOperators(ident, tokenSets, inputList)
-            val mulDiv: List<SymbolicIntermediateOperation> = generateMultDivOperators(powers, tokenSets, inputList)
-            return generateAddSub(mulDiv, tokenSets, inputList)
+        fun generateIntermediateOperators(curr: List<SymbolicIntermediateOperation>, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
+            val ident: List<SymbolicIntermediateOperation> = generateIdentities(curr, inputList)
+            val powers: List<SymbolicIntermediateOperation> = generatePowerOperators(ident, inputList)
+            val mulDiv: List<SymbolicIntermediateOperation> = generateMultDivOperators(powers, inputList)
+            return generateAddSub(mulDiv, inputList)
         }
 
-        fun generateIdentities(curr: List<SymbolicIntermediateOperation>, tokenSets: List<SymbolicTokenSet>, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
+        fun generateIdentities(curr: List<SymbolicIntermediateOperation>, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
             val clone: MutableList<SymbolicIntermediateOperation> = ArrayList(curr)
-            var retList: List<SymbolicIntermediateOperation> = ArrayList<SymbolicIntermediateOperation>()
+            val retList: List<SymbolicIntermediateOperation>
             for (i in inputList.indices) {
                 val token: Token<SymbolicTokenType?> = inputList[i]
                 if (indexProcessedOperation(i, clone)) {
@@ -223,9 +223,9 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
             return retList
         }
 
-        fun generatePowerOperators(curr: List<SymbolicIntermediateOperation>?, tokenSets: List<SymbolicTokenSet>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
+        fun generatePowerOperators(curr: List<SymbolicIntermediateOperation>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
             val clone: MutableList<SymbolicIntermediateOperation> = ArrayList(curr)
-            var retList: List<SymbolicIntermediateOperation> = ArrayList<SymbolicIntermediateOperation>()
+            val retList: List<SymbolicIntermediateOperation>
             for (i in inputList.indices) {
                 val token: Token<SymbolicTokenType?> = inputList[i]
                 if (indexProcessedOperation(i, clone)) {
@@ -250,9 +250,9 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
             return retList
         }
 
-        fun generateMultDivOperators(curr: List<SymbolicIntermediateOperation>?, tokenSets: List<SymbolicTokenSet>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
+        fun generateMultDivOperators(curr: List<SymbolicIntermediateOperation>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
             val clone: MutableList<SymbolicIntermediateOperation> = ArrayList(curr)
-            var retList: List<SymbolicIntermediateOperation> = ArrayList<SymbolicIntermediateOperation>()
+            val retList: List<SymbolicIntermediateOperation>
             for (i in inputList.indices) {
                 val token: Token<SymbolicTokenType?> = inputList[i]
                 if (indexProcessedOperation(i, clone)) {
@@ -286,7 +286,7 @@ class SymbolicSyntaxAnalyzer(val tokenizer: SymbolicTokenizer = SymbolicTokenize
             return retList
         }
 
-        fun generateAddSub(curr: List<SymbolicIntermediateOperation>?, tokenSets: List<SymbolicTokenSet>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
+        fun generateAddSub(curr: List<SymbolicIntermediateOperation>?, inputList: List<Token<SymbolicTokenType?>>): List<SymbolicIntermediateOperation> {
             val clone: MutableList<SymbolicIntermediateOperation> = ArrayList(curr)
             var retList: List<SymbolicIntermediateOperation>
             for (i in inputList.indices) {

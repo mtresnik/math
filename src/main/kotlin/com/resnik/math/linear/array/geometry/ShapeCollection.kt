@@ -2,6 +2,7 @@ package com.resnik.math.linear.array.geometry
 
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayPoint2d
+import com.resnik.math.linear.array.ArrayVector
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
@@ -15,14 +16,18 @@ import kotlin.math.floor
 class ShapeCollection(val width : Int = 1000,
                       val height : Int = 1000,
                       val background : Color = Color.WHITE,
-                      val pointRadius : Int = 20
+                      val pointRadius : Int = 20,
+                      val offset : Double = 1.0
 ) {
 
-    val shapes : MutableMap<Shape, Color> = mutableMapOf()
+    val shapes : MutableMap<Shape<*>, Color> = mutableMapOf()
+    val vectors : MutableMap<ArrayVector, Color> = mutableMapOf()
     val points : MutableMap<ArrayPoint2d, Color> = mutableMapOf()
+    val lines : MutableMap<Line, Color> = mutableMapOf()
+    val splines : MutableMap<Spline2d, Color> = mutableMapOf()
     lateinit var boundingBox : BoundingBox
 
-    fun addShape(shape : Shape, color : Color = Color.BLACK){
+    fun addShape(shape : Shape<*>, color : Color = Color.BLACK){
         this.shapes[shape] = color
     }
 
@@ -30,11 +35,21 @@ class ShapeCollection(val width : Int = 1000,
         this.points[point] = color
     }
 
+    fun addVector(vector: ArrayVector, color : Color = Color.BLACK){
+        this.vectors[vector] = color
+    }
+
+    fun addLine(line : Line, color: Color = Color.BLACK) {
+        this.lines[line] = color
+    }
+
+    fun addSpline(spline: Spline2d, color: Color = Color.BLACK) {
+        this.splines[spline] = color
+    }
+
     fun drawCenteredCircle(g: Graphics2D, x: Int, y: Int, r: Int) = g.fillOval(x - r / 2, y - r / 2, r, r)
 
     fun convertPixels(point: ArrayPoint2d) : Pair<Int, Int> {
-        if(point !in boundingBox)
-            throw RuntimeException("Point is outside current bounds of image.")
         val x = point.x
         val y = point.y
         val relX = (x - boundingBox.minX()) / (boundingBox.maxX() - boundingBox.minX())
@@ -56,7 +71,6 @@ class ShapeCollection(val width : Int = 1000,
         graphics2D.drawLine(from.first, from.second, to.first, to.second)
     }
 
-
     fun build() : BufferedImage {
         val image = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val graphics: Graphics2D = image.createGraphics()
@@ -67,7 +81,13 @@ class ShapeCollection(val width : Int = 1000,
         val pointList = mutableListOf<ArrayPoint>()
         points.forEach{pointList.add(it.key)}
         shapes.forEach{pointList.addAll(it.key.getPoints())}
-        boundingBox = BoundingBox(*pointList.toTypedArray())
+        splines.forEach { pointList.addAll(it.key.getPoints()) }
+        val shapeBoundingBox = BoundingBox(*pointList.toTypedArray())
+        val minX = shapeBoundingBox.minX() - offset
+        val minY = shapeBoundingBox.minY() - offset
+        val maxX = shapeBoundingBox.maxX() + offset
+        val maxY = shapeBoundingBox.maxY() + offset
+        boundingBox = BoundingBox(ArrayPoint(minX, minY), ArrayPoint(maxX, maxY))
 
 
         shapes.forEach{shapePair ->
@@ -86,10 +106,28 @@ class ShapeCollection(val width : Int = 1000,
                 yCoords.add(coords.second)
             }
             graphics.fillPolygon(xCoords.toIntArray(), yCoords.toIntArray(), xCoords.size)
+        }
 
+        splines.forEach { pair ->
+            val spline = pair.key
+            val color = pair.value
+            spline.getPoints().forEach { point ->
+                drawPoint(color, point.to2d(), graphics)
+            }
+            spline.getPoints().zipWithNext { from: ArrayPoint, dest: ArrayPoint ->
+                drawLine(color, from.to2d(), dest.to2d(), graphics)
+            }
+        }
 
+        lines.forEach { pair ->
+            drawLine(pair.value, pair.key.from.to2d(), pair.key.to.to2d(), graphics)
         }
         points.forEach{drawPoint(it.value, it.key, graphics)}
+        val origin = ArrayPoint2d(0.0, 0.0)
+        vectors.forEach{
+            val dest = origin + it.key
+            drawLine(it.value, origin, dest.to2d(), graphics)
+        }
         graphics.dispose()
         return image
     }

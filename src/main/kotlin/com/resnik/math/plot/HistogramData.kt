@@ -48,7 +48,7 @@ class HistogramData(val label : String = "data",
         }
 
         fun <T : Number> fromCountList(countList: CountList<T>,
-                                       binsize: Double,
+                                       binsize: Double = 0.5,
                                        label : String = "data",
                                        color : Color = Color.BLUE) : HistogramData {
             val histogramData = HistogramData(label, color)

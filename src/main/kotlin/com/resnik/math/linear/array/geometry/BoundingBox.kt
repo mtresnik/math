@@ -2,15 +2,20 @@ package com.resnik.math.linear.array.geometry
 
 import com.resnik.math.linear.array.ArrayPoint
 
-class BoundingBox(vararg val points : ArrayPoint) : Shape2d {
+class BoundingBox(vararg points : ArrayPoint) : Shape2d<ConcaveHull> {
 
     val minDim : Int = points.minBy { it.dim }!!.dim
     val minPoint : ArrayPoint
     val maxPoint : ArrayPoint
+    val _points : MutableList<ArrayPoint> = mutableListOf()
 
     init {
         minPoint = ArrayPoint(*DoubleArray(minDim){index -> points.minBy { it[index] }!![index]})
         maxPoint = ArrayPoint(*DoubleArray(minDim){index -> points.maxBy { it[index] }!![index]})
+        _points.add(ArrayPoint(minX(), minY()))
+        _points.add(ArrayPoint(minX(), maxY()))
+        _points.add(ArrayPoint(maxX(), maxY()))
+        _points.add(ArrayPoint(maxX(), minY()))
     }
 
     fun minX() : Double = minPoint.x()
@@ -39,5 +44,9 @@ class BoundingBox(vararg val points : ArrayPoint) : Shape2d {
         return true
     }
 
-    override fun getPoints(): List<ArrayPoint> = points.toMutableList()
+    override fun getPoints(): List<ArrayPoint> = _points.toMutableList()
+
+    override fun generate(points: List<ArrayPoint>): ConcaveHull {
+        return ConcaveHull(*points.toTypedArray())
+    }
 }

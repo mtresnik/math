@@ -2,13 +2,11 @@ package com.resnik.math.symbo.algebra.parse
 
 import com.resnik.math.symbo.parse.Token
 import com.resnik.math.symbo.parse.TokenizationException
-import java.util.*
-import java.util.function.ToIntFunction
 
 class SymbolicTokenizer {
 
-    fun tokenize(inputString: String?, functions: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType?>> {
-        var inputString = inputString
+    fun tokenize(inputStringParam: String?, functions: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType?>> {
+        var inputString = inputStringParam
         inputString = preProcess(inputString)
         val numbers: MutableList<Token<SymbolicTokenType>> = tokenizeNumbers(inputString)
         val operators: MutableList<Token<SymbolicTokenType>> = tokenizeOperators(numbers, inputString)
@@ -22,7 +20,7 @@ class SymbolicTokenizer {
     fun tokenizeNumbers(inputString: String?): MutableList<Token<SymbolicTokenType>> {
         val VALID = ALL_NUMBERS + DECIMAL
         val arrayRep = inputString!!.toCharArray()
-        val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
+        val retList: MutableList<Token<SymbolicTokenType>> = ArrayList()
         var accumulate = ""
         for (i in arrayRep.indices) {
             if (arrayRep[i] == DECIMAL && accumulate.contains(DECIMAL.toString() + "")) {
@@ -58,7 +56,7 @@ class SymbolicTokenizer {
             if (indexProcessed(i, retList)) {
                 continue
             }
-            if (OPERATORS!!.contains(arrayRep[i].toString() + "")) {
+            if (OPERATORS.contains(arrayRep[i].toString() + "")) {
                 val operator: Token<SymbolicTokenType> = Token.singleIndex(i, SymbolicTokenType.OPERATOR, arrayRep[i])
                 retList.add(operator)
             }
@@ -123,14 +121,14 @@ class SymbolicTokenizer {
             }
             if (next != null && next.type === SymbolicTokenType.OPEN_PARENTHESES) {
                 var innerFunc: String? = null
-                for (func in functions!!.entries) {
+                for (func in functions.entries) {
                     if (func.value !== SymbolicTokenType.FUNCTION) {
                         continue
                     }
-                    if (func.key!!.length > curr.rep!!.length) {
+                    if (func.key.length > curr.rep!!.length) {
                         continue
                     }
-                    if (curr.rep!!.endsWith(func.key!!)) {
+                    if (curr.rep!!.endsWith(func.key)) {
                         innerFunc = func.key
                         break
                     }
@@ -158,29 +156,29 @@ class SymbolicTokenizer {
 
     fun tokenizeVariables(tokenList: MutableList<Token<SymbolicTokenType>>, variableMap: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
-        for (i in tokenList!!.indices) {
+        for (i in tokenList.indices) {
             val curr: Token<SymbolicTokenType> = tokenList[i]
             if (curr.type !== SymbolicTokenType.TEXT) {
                 retList.add(curr)
                 continue
             }
-            retList.addAll(maxVariables(curr.rep!!, variableMap)!!)
+            retList.addAll(maxVariables(curr.rep!!, variableMap))
         }
         return retList
     }
 
     companion object {
-        val ALL_NUMBERS: String? = "0123456789"
+        val ALL_NUMBERS: String = "0123456789"
         const val DECIMAL = '.'
-        val PLUS: String? = "+"
-        val MINUS: String? = "-"
-        val MULT: String? = "*"
-        val DIVIDE: String? = "/"
-        val POW: String? = "^"
-        val OPERATORS: String? = PLUS + MINUS + MULT + DIVIDE + POW
+        val PLUS: String = "+"
+        val MINUS: String = "-"
+        val MULT: String = "*"
+        val DIVIDE: String = "/"
+        val POW: String = "^"
+        val OPERATORS: String = PLUS + MINUS + MULT + DIVIDE + POW
         const val OPEN_PARENTHESES = '('
         const val CLOSED_PARENTHESES = ')'
-        fun preProcess(inputString: String?): String? {
+        fun preProcess(inputString: String?): String {
             var balance = 0
             for (c in inputString!!.toCharArray()) {
                 if (c == OPEN_PARENTHESES) {
@@ -197,10 +195,11 @@ class SymbolicTokenizer {
                     .replace("\\(\\)".toRegex(), "")
         }
 
+        @Suppress("UNCHECKED_CAST")
         fun postProcess(inputList: MutableList<Token<SymbolicTokenType>>): MutableList<Token<SymbolicTokenType?>> {
             var currList: MutableList<Token<SymbolicTokenType>> = justifyMult(inputList)
             var collapsed: MutableList<Token<SymbolicTokenType>> = collapseSigns(currList)
-            while (collapsed!!.size != currList!!.size) {
+            while (collapsed.size != currList.size) {
                 currList = collapsed
                 collapsed = collapseSigns(currList)
             }
@@ -211,7 +210,7 @@ class SymbolicTokenizer {
 
         fun justifyMult(inputList: MutableList<Token<SymbolicTokenType>>): MutableList<Token<SymbolicTokenType>> {
             val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
-            for (i in inputList!!.indices) {
+            for (i in inputList.indices) {
                 val curr: Token<SymbolicTokenType> = inputList[i]
                 val next: Token<SymbolicTokenType>? = if (i < inputList.size - 1) inputList[i + 1] else null
                 retList.add(curr)
@@ -226,7 +225,7 @@ class SymbolicTokenizer {
         fun collapseSigns(inputList: MutableList<Token<SymbolicTokenType>>): MutableList<Token<SymbolicTokenType>> {
             val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
             var i = 0
-            while (i < inputList!!.size) {
+            while (i < inputList.size) {
                 val curr: Token<SymbolicTokenType> = inputList[i]
                 val next: Token<SymbolicTokenType>? = if (i < inputList.size - 1) inputList[i + 1] else null
                 if (curr.type === SymbolicTokenType.OPERATOR && next != null && next.type === SymbolicTokenType.OPERATOR) {
@@ -248,7 +247,7 @@ class SymbolicTokenizer {
         }
 
         fun indexProcessed(i: Int, tokenList: MutableList<Token<SymbolicTokenType>>): Boolean {
-            for (t in tokenList!!) {
+            for (t in tokenList) {
                 if (ParseRangeUtils.inRange(i, t.startIndex, t.endIndex)) {
                     return true
                 }
@@ -260,13 +259,13 @@ class SymbolicTokenizer {
             val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
             var max: String? = null
             var maxCount = -1
-            for (varEntry in variableMap!!.entries) {
+            for (varEntry in variableMap.entries) {
                 if (varEntry.value !== SymbolicTokenType.VARIABLE) {
                     continue
                 }
-                if (inputString!!.contains(varEntry.key!!) && varEntry.key!!.length > maxCount) {
+                if (inputString.contains(varEntry.key) && varEntry.key.length > maxCount) {
                     max = varEntry.key
-                    maxCount = max!!.length
+                    maxCount = max.length
                 }
             }
             val rem: Array<String?> = ParseStringUtils.findRem(inputString, max)
@@ -275,23 +274,22 @@ class SymbolicTokenizer {
                 return retList
             }
             if (rem.size == 1) {
-                if (inputString!!.indexOf(max) == 0) {
+                if (inputString.indexOf(max) == 0) {
                     retList.add(Token.nullIndex(SymbolicTokenType.VARIABLE, max))
-                    val RHS: MutableList<Token<SymbolicTokenType>> = maxVariables(rem[0]!!, variableMap)
-                    retList.addAll(RHS!!)
+                    retList.addAll(maxVariables(rem[0]!!, variableMap))
                     return retList
                 }
                 val LHS: MutableList<Token<SymbolicTokenType>> = maxVariables(rem[0]!!, variableMap)
-                retList.addAll(LHS!!)
+                retList.addAll(LHS)
                 retList.add(Token.nullIndex(SymbolicTokenType.VARIABLE, max))
                 return retList
             }
             if (rem.size == 2) {
                 val LHS: MutableList<Token<SymbolicTokenType>> = maxVariables(rem[0]!!, variableMap)
                 val RHS: MutableList<Token<SymbolicTokenType>> = maxVariables(rem[1]!!, variableMap)
-                retList.addAll(LHS!!)
+                retList.addAll(LHS)
                 retList.add(Token.nullIndex(SymbolicTokenType.VARIABLE, max))
-                retList.addAll(RHS!!)
+                retList.addAll(RHS)
                 return retList
             }
             retList.add(Token.nullIndex(SymbolicTokenType.VARIABLE, inputString))

@@ -4,7 +4,7 @@ import java.util.*
 
 open class CountList<T> : Iterable<Map.Entry<T, Int>> {
 
-    val internalMap = TreeMap<T, Int>()
+    private val internalMap = TreeMap<T, Int>()
 
     operator fun get(obj : T) : Int = internalMap.getOrDefault(obj, 0)
 
@@ -26,6 +26,8 @@ open class CountList<T> : Iterable<Map.Entry<T, Int>> {
         ret.addAll(this)
         return ret
     }
+
+    fun toMap() : Map<T, Int> = TreeMap(internalMap)
 
     override fun toString() : String {
         return internalMap.toString()

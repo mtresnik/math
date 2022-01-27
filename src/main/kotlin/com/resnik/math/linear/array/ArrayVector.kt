@@ -1,6 +1,7 @@
 package com.resnik.math.linear.array
 
 import com.resnik.math.plus
+import java.util.*
 import kotlin.math.pow
 
 open class ArrayVector(vararg val values: Double) {
@@ -9,11 +10,21 @@ open class ArrayVector(vararg val values: Double) {
 
     constructor(size: Int, value: Double) : this(*DoubleArray(size) {value})
 
+    operator fun plus(other: ArrayPoint) : ArrayPoint = ArrayPoint(*values.zip(other.values) { a, b -> a + b }.toDoubleArray())
+
     operator fun plus(other: ArrayVector): ArrayVector = ArrayVector(*values.zip(other.values) { a, b -> a + b }.toDoubleArray())
 
     operator fun minus(other: ArrayVector): ArrayVector = ArrayVector(*values.zip(other.values) { a, b -> a - b }.toDoubleArray())
 
     operator fun times(other: ArrayVector): Double = values.zip(other.values) { a, b -> a * b}.sum()
+
+    fun dot(other: ArrayVector) : Double = this * other
+
+    fun cross(other : ArrayVector) : ArrayVector = ArrayVector(
+            this[1] * other[2] - other[1] * this[2],
+            this[2] * other[0] - other[2] * this[0],
+            this[0] * other[1] - other[0] * this[1]
+    )
 
     operator fun plus(value: Double): ArrayVector = ArrayVector(*values.map { it + value }.toDoubleArray())
 
@@ -55,6 +66,8 @@ open class ArrayVector(vararg val values: Double) {
 
     fun magnitude(): Double = values.map { v -> v.pow(2) }.sum().pow(0.5)
 
+    fun normalized() : ArrayVector = ArrayVector(*(values.map { it / magnitude() }.toDoubleArray()))
+
     fun maxIndex() : Int = values.indices.maxBy { values[it] } ?: -1
 
     override fun equals(other: Any?): Boolean {
@@ -71,5 +84,14 @@ open class ArrayVector(vararg val values: Double) {
     override fun hashCode(): Int = values.contentHashCode()
 
     override fun toString(): String = "<${values.contentToString()}>"
+
+    companion object {
+
+        private val random : Random = Random()
+
+        fun randomGaussian(size: Int) : ArrayVector {
+            return ArrayVector(*DoubleArray(size){ random.nextGaussian()})
+        }
+    }
 
 }

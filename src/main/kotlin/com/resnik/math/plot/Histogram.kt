@@ -7,23 +7,14 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 class Histogram(vararg val histogramData: HistogramData,
-                val width : Int = 500,
-                val height : Int = 500,
-                val background : Color = Color.WHITE,
-                val axisColor : Color = Color.BLACK,
-                val lineColor : Color = Color.LIGHT_GRAY,
-                val axisThickness : Float = 5.0f,
-                val dataLineThickness : Float = 2.0f
-) {
-
-    private fun drawAxes(graphics2D: Graphics2D) {
-        graphics2D.paint = axisColor
-        graphics2D.stroke = BasicStroke(5.0f)
-        graphics2D.drawLine(0,0,width,0)
-        graphics2D.drawLine(width,0,width, height)
-        graphics2D.drawLine(0,height,width, height)
-        graphics2D.drawLine(0,0,0, height)
-    }
+                width : Int = 500,
+                height : Int = 500,
+                background : Color = Color.WHITE,
+                axisColor : Color = Color.BLACK,
+                lineColor : Color = Color.LIGHT_GRAY,
+                axisThickness : Float = 5.0f,
+                dataLineThickness : Float = 2.0f
+) : Chart(width, height, 0, background, axisColor, lineColor, axisThickness, dataLineThickness) {
 
     private fun drawLines(graphics2D: Graphics2D) {
         // Get max number of lines from all histogram data
@@ -114,16 +105,12 @@ class Histogram(vararg val histogramData: HistogramData,
     }
 
     fun plot(drawBoxes: Boolean = true, connectLines : Boolean = false) : BufferedImage {
-        // Draw axes
-        val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-        val graphics2D = bufferedImage.createGraphics()
-        graphics2D.background = background
-        graphics2D.clearRect(0, 0, width, height)
-        drawAxes(graphics2D)
+        val pair = renderAxes()
+        val bufferedImage = pair.first
+        val graphics2D = pair.second
         drawLines(graphics2D)
         if(drawBoxes) drawBoxes(graphics2D)
         if(connectLines) connectLines(graphics2D)
-
         return bufferedImage
     }
 

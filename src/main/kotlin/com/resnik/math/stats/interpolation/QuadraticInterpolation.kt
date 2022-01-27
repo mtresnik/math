@@ -5,7 +5,8 @@ import com.resnik.math.linear.array.ArrayPoint2d
 import com.resnik.math.linear.array.ArrayVector
 import kotlin.math.pow
 
-class QuadraticInterpolation(val x1 : Double, val y1 : Double, val x2 : Double, val y2 : Double, val x3 : Double, val y3 : Double) : Function1<Double, Double> {
+class QuadraticInterpolation(private val x1 : Double, private val y1 : Double, private val x2 : Double, private val y2 : Double, private val x3 : Double, private val y3 : Double)
+    : Function1<Double, Double> {
 
     val det = det(1.0, x1, x1.pow(2.0), 1.0, x2, x2.pow(2.0), 1.0, x3, x3.pow(2.0))
     val yBar = ArrayVector(y1,y2,y3).toColMatrix()

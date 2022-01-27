@@ -4,7 +4,7 @@ import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayPoint2d
 import kotlin.math.*
 
-class Circle(val center : ArrayPoint, radius : Double) : Shape2d {
+class Circle(val center : ArrayPoint, radius : Double) : Shape2d<Circle> {
 
     val radius : Double = radius.absoluteValue
 
@@ -25,5 +25,7 @@ class Circle(val center : ArrayPoint, radius : Double) : Shape2d {
         }
         return retList
     }
+
+    override fun generate(points: List<ArrayPoint>): Circle = Circle(points.first(), radius)
 
 }
