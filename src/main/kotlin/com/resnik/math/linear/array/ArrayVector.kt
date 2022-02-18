@@ -32,6 +32,8 @@ open class ArrayVector(vararg val values: Double) {
 
     operator fun times(value: Double): ArrayVector = ArrayVector(*values.map { it * value }.toDoubleArray())
 
+    operator fun times(value: Int): ArrayVector = times(value.toDouble())
+
     operator fun Double.times(other: ArrayVector) : ArrayVector = other.times(this)
 
     operator fun Double.div(other : ArrayVector) : ArrayVector = other.div(this)
@@ -39,6 +41,8 @@ open class ArrayVector(vararg val values: Double) {
     fun append(other: ArrayVector) : ArrayVector = ArrayVector(*(this.values + other.values))
 
     operator fun div(value: Double): ArrayVector = ArrayVector(*values.map { it / value }.toDoubleArray())
+
+    operator fun div(value: Int): ArrayVector = div(value.toDouble())
 
     fun limit(size: Int) : ArrayVector = ArrayVector(*this.values.copyOfRange(0, size))
 

@@ -32,4 +32,6 @@ class ConcaveHull(vararg val points : ArrayPoint) : Shape2d<ConcaveHull> {
 
     override fun area(): Double = 0.0
 
+    // TODO : Add get neighbors function similar to Rect#getNeighbors(list<rect>) : list<int>
+
 }

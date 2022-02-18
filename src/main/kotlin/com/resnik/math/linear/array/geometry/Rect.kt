@@ -1,6 +1,5 @@
 package com.resnik.math.linear.array.geometry
 
-import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayPoint2d
 
 open class Rect(val x : Double, val y : Double, val width : Double, val height : Double) {
@@ -49,5 +48,47 @@ open class Rect(val x : Double, val y : Double, val width : Double, val height :
     }
 
     class RectDivision(var topRight : Rect?, var topLeft : Rect?, var bottomLeft : Rect?, var bottomRight : Rect?)
+
+    companion object {
+
+        fun minimize(rects : Collection<Rect>) : Pair<Double, Double> = rects.map { it.width }.min()!! to rects.map { it.height }.min()!!
+
+        fun maximize(rects : Collection<Rect>) : Pair<Double, Double> = rects.map { it.width }.max()!! to rects.map { it.height }.max()!!
+
+    }
+
+    fun getNeighborIndices(rectList : List<Rect>, minWidth : Double = 0.001, minHeight : Double = 0.001) : List<Int> {
+        // Check if boundary points are within other rects
+        /*
+        * x: not neighbor
+        * o: neighbor
+        * c: center
+        *
+        * [x][o][x]
+        * [o][c][o]
+        * [x][o][x]
+        *
+        * */
+        val numX = (2 * width / minWidth).coerceAtLeast(3.0).toInt()
+        val dx = width / numX
+        val numY = (2 * height / minHeight).coerceAtLeast(3.0).toInt()
+        val dy = height / numY
+        val testPoints = mutableListOf<ArrayPoint2d>()
+        // Top and bottom rect(s)
+        repeat(numX) { col ->
+            val tx = this.x + col*dx
+            testPoints.add(ArrayPoint2d(tx, this.y - dy))
+            testPoints.add(ArrayPoint2d(tx, this.y + height + dy))
+        }
+        repeat(numY) { row ->
+            val ty = this.y + row*dy
+            testPoints.add(ArrayPoint2d(this.x - dx, ty))
+            testPoints.add(ArrayPoint2d(this.x + width + dx, ty))
+        }
+        return rectList.indices.filter { index -> rectList[index] != this && testPoints.any { point -> point in rectList[index] } }
+    }
+
+    override fun toString(): String = "($x,$y)"
+
 
 }
