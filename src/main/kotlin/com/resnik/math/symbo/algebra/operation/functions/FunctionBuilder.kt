@@ -7,8 +7,10 @@ import java.util.LinkedHashMap
 import java.util.function.Function
 
 object FunctionBuilder {
+
     var generationMap: MutableMap<String, Function<Void?, Operation>> = LinkedHashMap<String, Function<Void?, Operation>>()
     var paramsMap: MutableMap<String, Array<Variable>> = LinkedHashMap<String, Array<Variable>>()
+
     fun substitute(name: String): Operation {
         return substitute(name, arrayOfNulls<Operation>(0))
     }

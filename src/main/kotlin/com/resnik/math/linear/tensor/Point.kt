@@ -16,6 +16,8 @@ class Point(vararg val values : Operation) {
 
     operator fun minus(other: Point) : Vector = Vector(Array(dim){ this[it] - other[it]})
 
+    operator fun plus(other: Vector) : Point = Point(*Array(dim){ this[it] + other[it].value})
+
     open fun distanceTo(other: Point): Scalar = (this - other).magnitude()
 
     fun distanceTo(p1: Point, p2: Point): Scalar = p1.distanceTo(p2)
