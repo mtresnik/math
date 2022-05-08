@@ -3,10 +3,10 @@ package com.resnik.math.symbo.algebra.operation.functions
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
 
-class Log(val base : Operation, val inner : Operation) : Operation(base, inner) {
+class Log(val base: Operation, val inner: Operation) : Operation(base, inner) {
 
     override fun toConstant(): Constant {
-        if(!isConstant()){
+        if (!isConstant()) {
             return Constant.NaN
         }
         val numerator = inner.toConstant().value.ln()
@@ -17,7 +17,7 @@ class Log(val base : Operation, val inner : Operation) : Operation(base, inner) 
     override fun toNonConstantString(): String = "log($base, $inner)"
 
     override fun generate(values: Array<Operation>): Operation {
-        when(values.size){
+        when (values.size) {
             0 -> {
                 return Log(Constant.E, Constant.E)
             }
@@ -33,7 +33,7 @@ class Log(val base : Operation, val inner : Operation) : Operation(base, inner) 
     companion object {
 
         @JvmStatic
-        fun ln(inner : Operation) : Log = Log(Constant.E, inner)
+        fun ln(inner: Operation): Log = Log(Constant.E, inner)
 
     }
 

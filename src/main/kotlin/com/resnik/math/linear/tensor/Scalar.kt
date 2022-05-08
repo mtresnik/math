@@ -5,19 +5,19 @@ import com.resnik.math.symbo.algebra.operation.Constant.Companion.toConstant
 import com.resnik.math.symbo.algebra.operation.Operation
 import com.resnik.math.symbo.algebra.operation.Variable
 
-class Scalar(val value : Operation = Constant.ZERO) : Tensor(TensorDimension()) {
+class Scalar(val value: Operation = Constant.ZERO) : Tensor(TensorDimension()) {
 
-    constructor(doubleVal : Double) : this(doubleVal.toConstant())
+    constructor(doubleVal: Double) : this(doubleVal.toConstant())
 
-    operator fun plus(other: Scalar) : Scalar = Scalar(this.value + other.value)
+    operator fun plus(other: Scalar): Scalar = Scalar(this.value + other.value)
 
-    operator fun minus(other: Scalar) : Scalar = Scalar(this.value - other.value)
+    operator fun minus(other: Scalar): Scalar = Scalar(this.value - other.value)
 
-    operator fun times(other: Scalar) : Scalar = Scalar(this.value * other.value)
+    operator fun times(other: Scalar): Scalar = Scalar(this.value * other.value)
 
-    operator fun div(other: Scalar) : Scalar = Scalar(this.value / other.value)
+    operator fun div(other: Scalar): Scalar = Scalar(this.value / other.value)
 
-    fun Double.toScalar() : Scalar = Scalar(this.toConstant())
+    fun Double.toScalar(): Scalar = Scalar(this.toConstant())
 
     override fun evaluate(variable: Variable, operation: Operation): Tensor {
         return Scalar(value.evaluate(variable, operation))

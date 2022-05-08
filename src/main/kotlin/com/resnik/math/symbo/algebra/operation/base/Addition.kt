@@ -3,17 +3,16 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
-import java.util.*
 
-class Addition(values : Array<Operation>) : Operation(*values) {
+class Addition(values: Array<Operation>) : Operation(*values) {
 
-    constructor(o1 : Operation, o2 : Operation, vararg oN : Operation) : this(require2(o1,o2,*oN))
+    constructor(o1: Operation, o2: Operation, vararg oN: Operation) : this(require2(o1, o2, *oN))
 
     override fun toConstant(): Constant {
-        if(!isConstant()){
+        if (!isConstant()) {
             return Constant.NaN
         }
-        var ret : Constant = Constant.ZERO
+        var ret: Constant = Constant.ZERO
         this.values.indices.forEach {
             ret = Constant(ret.value + this.values[it].toConstant().value)
         }

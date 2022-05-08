@@ -4,11 +4,11 @@ import com.resnik.math.util.CountList
 
 abstract class Rollable {
 
-    abstract fun roll() : Int
+    abstract fun roll(): Int
 
-    fun roll(n : Int) : CountList<Int> {
+    fun roll(n: Int): CountList<Int> {
         val ret = CountList<Int>()
-        repeat(n){
+        repeat(n) {
             ret + roll()
         }
         return ret

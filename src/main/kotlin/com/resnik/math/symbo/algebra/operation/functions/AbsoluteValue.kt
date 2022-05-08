@@ -3,7 +3,7 @@ package com.resnik.math.symbo.algebra.operation.functions
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
 
-class AbsoluteValue(val inner : Operation) : Operation(inner){
+class AbsoluteValue(val inner: Operation) : Operation(inner) {
 
     override fun toConstant(): Constant = Constant(inner.toConstant().value.r())
 

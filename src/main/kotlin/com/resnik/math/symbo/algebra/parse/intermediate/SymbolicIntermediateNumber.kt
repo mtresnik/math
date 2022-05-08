@@ -6,7 +6,8 @@ import com.resnik.math.symbo.algebra.parse.SymbolicTokenType
 import com.resnik.math.symbo.parse.Token
 import com.resnik.math.symbo.parse.TokenizationException
 
-class SymbolicIntermediateNumber(startIndex: Int, endIndex: Int, token: Token<SymbolicTokenType?>) : SymbolicIntermediateOperation(startIndex, endIndex, mutableListOf(token)) {
+class SymbolicIntermediateNumber(startIndex: Int, endIndex: Int, token: Token<SymbolicTokenType?>) :
+    SymbolicIntermediateOperation(startIndex, endIndex, mutableListOf(token)) {
 
     override fun compile(): Operation {
         val rep = tokens[0].rep

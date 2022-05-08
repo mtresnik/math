@@ -1,6 +1,6 @@
 package com.resnik.math.linear.array
 
-class ArrayTensorCoordIterator(region : ArrayTensorRegion) :
+class ArrayTensorCoordIterator(region: ArrayTensorRegion) :
     ArrayTensorCoordIteratorInterface {
 
     val startCoord = IntArray(region.first.size())
@@ -22,16 +22,16 @@ class ArrayTensorCoordIterator(region : ArrayTensorRegion) :
 
     override fun numTraversed(): Int = currentCount
 
-    override fun coords(): IntArray  = currentCoord
+    override fun coords(): IntArray = currentCoord
 
     override fun hasNext(): Boolean = currentCount < finalIndex
 
     override fun next(): IntArray {
         currentCoord.indices.forEach {
-            if(currentCoord[it] > finalCoord[it]){
+            if (currentCoord[it] > finalCoord[it]) {
                 currentCount += (currentCoord[it] - finalCoord[it] - 1)
                 currentCoord[it] = startCoord[it]
-            }else{
+            } else {
                 currentCoord[it] = currentCoord[it] + 1
                 currentCount++
                 return currentCoord

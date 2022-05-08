@@ -47,7 +47,7 @@ class Bounds(a: ComplexNumber, b: ComplexNumber) {
     }
 
     fun toList(separations: Int): List<ComplexNumber> =
-            Array(separations) { min + (max - min) * (it.toDouble() / separations) }.toList()
+        Array(separations) { min + (max - min) * (it.toDouble() / separations) }.toList()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

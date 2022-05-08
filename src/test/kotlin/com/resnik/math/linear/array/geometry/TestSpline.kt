@@ -3,6 +3,7 @@ package com.resnik.math.linear.array.geometry
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayPoint2d
 import com.resnik.math.linear.array.geometry.Spline
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 
@@ -33,6 +34,7 @@ class TestSpline {
         println(point4)
     }
 
+    @Ignore
     @Test
     fun testSplineRender() {
         val startX = -2.0

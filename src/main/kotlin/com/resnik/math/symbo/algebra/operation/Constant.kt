@@ -2,11 +2,11 @@ package com.resnik.math.symbo.algebra.operation
 
 import com.resnik.math.symbo.algebra.ComplexNumber
 
-class Constant(val value : ComplexNumber) : Operation() {
+class Constant(val value: ComplexNumber) : Operation() {
 
-    constructor(value : Double) : this(ComplexNumber(value))
+    constructor(value: Double) : this(ComplexNumber(value))
 
-    constructor(real : Double, imaginary : Double) : this(ComplexNumber(real, imaginary))
+    constructor(real: Double, imaginary: Double) : this(ComplexNumber(real, imaginary))
 
     override fun toConstant(): Constant = this
 
@@ -21,7 +21,7 @@ class Constant(val value : ComplexNumber) : Operation() {
 
     override fun isConstant(): Boolean = true
 
-    override fun generate(values: Array<Operation>) : Operation = Constant(this.value)
+    override fun generate(values: Array<Operation>): Operation = Constant(this.value)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -55,9 +55,9 @@ class Constant(val value : ComplexNumber) : Operation() {
         val NaN = ComplexNumber.NaN.toConstant()
         val INFINITY = ComplexNumber.INFINITY.toConstant()
 
-        fun ComplexNumber.toConstant() : Constant = Constant(this)
+        fun ComplexNumber.toConstant(): Constant = Constant(this)
 
-        fun Double.toConstant() : Constant = ComplexNumber(this).toConstant()
+        fun Double.toConstant(): Constant = ComplexNumber(this).toConstant()
     }
 
 

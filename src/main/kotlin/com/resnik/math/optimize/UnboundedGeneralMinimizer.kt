@@ -1,16 +1,18 @@
 package com.resnik.math.optimize
 
-class UnboundedGeneralMinimizer<T, K>(val optimizeDataset: OptimizeDataset<T, K>,
-                                val numDirections : Int = optimizeDataset.getSize(optimizeDataset.genSeed()),
-                                val numIterations : Int = 100,
-                                val stepSize : Double = 10.0,
-                                val numSteps : Int = 10) {
+class UnboundedGeneralMinimizer<T, K>(
+    val optimizeDataset: OptimizeDataset<T, K>,
+    val numDirections: Int = optimizeDataset.getSize(optimizeDataset.genSeed()),
+    val numIterations: Int = 100,
+    val stepSize: Double = 10.0,
+    val numSteps: Int = 10
+) {
 
-    fun genDirections() : MutableList<K> {
-        return MutableList(numDirections){optimizeDataset.genDirection()}
+    fun genDirections(): MutableList<K> {
+        return MutableList(numDirections) { optimizeDataset.genDirection() }
     }
 
-    fun getNextPoint(currPoint : T, directions : MutableList<K>, function: (data: T) -> Double) : T {
+    fun getNextPoint(currPoint: T, directions: MutableList<K>, function: (data: T) -> Double): T {
         // Clone directions into a step size oriented set, for big and small hops to see which has lower value
         var stepSizeOriented = mutableListOf<K>()
         repeat(numSteps) {
@@ -36,7 +38,6 @@ class UnboundedGeneralMinimizer<T, K>(val optimizeDataset: OptimizeDataset<T, K>
         }
         return currPoint
     }
-
 
 
 }

@@ -3,35 +3,36 @@ package com.resnik.math.optimize
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.geometry.Spline
 
-class RangedMinimizer(val classifiers : List<ImmutableDimensionClassifier>, val subSplineSize : Int = 100) : Minimizer {
+class RangedMinimizer(val classifiers: List<ImmutableDimensionClassifier>, val subSplineSize: Int = 100) : Minimizer {
 
     private val UNIFORM_NUMBER = 100
     private val RANDOM_NUMBER = 20
     private val MOMENTUM = 2.0
 
-    private fun uniformScaled(t : Double) : ArrayPoint {
+    private fun uniformScaled(t: Double): ArrayPoint {
         val retList = mutableListOf<Double>()
-        classifiers.forEach{retList.add(it.scaled(t))}
+        classifiers.forEach { retList.add(it.scaled(t)) }
         return ArrayPoint(*retList.toDoubleArray())
     }
 
-    private fun random() : ArrayPoint {
+    private fun random(): ArrayPoint {
         val retList = mutableListOf<Double>()
-        classifiers.forEach{retList.add(it.random())}
+        classifiers.forEach { retList.add(it.random()) }
         return ArrayPoint(*retList.toDoubleArray())
     }
 
-    private fun nextPoint(point1 : ArrayPoint, point2 : ArrayPoint, scale : Double = 1.0) : ArrayPoint {
+    private fun nextPoint(point1: ArrayPoint, point2: ArrayPoint, scale: Double = 1.0): ArrayPoint {
         val retList = mutableListOf<Double>()
         point1.values.indices.forEach { retList.add(scale * (point1[it] - point2[it] + point2[it])) }
         return ArrayPoint(*retList.toDoubleArray())
     }
 
-    private fun coerceIn(list1 : ArrayPoint) : ArrayPoint {
-        return ArrayPoint(*list1.values.mapIndexed { index: Int, d: Double -> classifiers[index].coerceIn(d) }.toDoubleArray())
+    private fun coerceIn(list1: ArrayPoint): ArrayPoint {
+        return ArrayPoint(*list1.values.mapIndexed { index: Int, d: Double -> classifiers[index].coerceIn(d) }
+            .toDoubleArray())
     }
 
-    private fun generateNext(func1 : (point : ArrayPoint) -> Double, previous : List<DataPoint>) : MutableList<DataPoint> {
+    private fun generateNext(func1: (point: ArrayPoint) -> Double, previous: List<DataPoint>): MutableList<DataPoint> {
         // Find direction from first and second, add result point to next list
         // Remove first element until new list is made, sort again
         val nextPoints = previous.zipWithNext { a: DataPoint, b: DataPoint ->
@@ -53,7 +54,7 @@ class RangedMinimizer(val classifiers : List<ImmutableDimensionClassifier>, val 
         return nextPoints.toMutableList()
     }
 
-    override fun minimize(func1 : (list : ArrayPoint) -> Double) : ArrayPoint {
+    override fun minimize(func1: (list: ArrayPoint) -> Double): ArrayPoint {
         val savedDatapoints = mutableListOf<DataPoint>()
         // Diagonal range
         // Uniform scale some amount of values in range
@@ -88,7 +89,7 @@ class RangedMinimizer(val classifiers : List<ImmutableDimensionClassifier>, val 
 
         val numNextPoint = combined.size / 2
         var currPoints = combined
-        repeat(numNextPoint){
+        repeat(numNextPoint) {
             val nextPoints = generateNext(func1, currPoints)
             savedDatapoints.add(nextPoints[0])
             savedDatapoints.add(nextPoints[1])

@@ -17,8 +17,8 @@ class ParseStringUtils {
             return if (test.endsWith(key)) {
                 arrayOf(test.substring(0, test.length - key.length))
             } else arrayOf(
-                    test.substring(0, index),
-                    test.substring(index + key.length)
+                test.substring(0, index),
+                test.substring(index + key.length)
             )
         }
     }

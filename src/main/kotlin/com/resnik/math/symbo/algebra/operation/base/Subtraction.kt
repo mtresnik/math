@@ -3,9 +3,8 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
-import java.util.*
 
-class Subtraction(values : Array<Operation>) : Operation(*values) {
+class Subtraction(values: Array<Operation>) : Operation(*values) {
 
     constructor(o1: Operation, o2: Operation, vararg oN: Operation) : this(require2(o1, o2, *oN))
 

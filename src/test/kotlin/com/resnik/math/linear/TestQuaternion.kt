@@ -4,6 +4,7 @@ import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayVector
 import com.resnik.math.linear.array.geometry.BoundingBox
 import com.resnik.math.linear.array.geometry.ShapeCollection
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 
@@ -17,6 +18,7 @@ class TestQuaternion {
         println(quat1 * quat2)
     }
 
+    @Ignore
     @Test
     fun testQuat2(){
         var boundingBox = BoundingBox(ArrayPoint(0.0,0.0), ArrayPoint(0.0, 1.0), ArrayPoint(1.0, 0.0), ArrayPoint(1.0, 1.0))

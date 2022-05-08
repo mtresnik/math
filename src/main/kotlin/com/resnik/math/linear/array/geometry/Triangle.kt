@@ -3,16 +3,16 @@ package com.resnik.math.linear.array.geometry
 import com.resnik.math.linear.array.ArrayPoint
 import kotlin.math.sqrt
 
-open class Triangle(val p1 : ArrayPoint, val p2 : ArrayPoint, val p3 : ArrayPoint) : Shape2d<Triangle> {
+open class Triangle(val p1: ArrayPoint, val p2: ArrayPoint, val p3: ArrayPoint) : Shape2d<Triangle> {
 
     override fun contains(point: ArrayPoint): Boolean {
-        val area1 = Triangle(p1,p2,point).area()
-        val area2 = Triangle(p2,p3,point).area()
-        val area3 = Triangle(p3,p1,point).area()
+        val area1 = Triangle(p1, p2, point).area()
+        val area2 = Triangle(p2, p3, point).area()
+        val area3 = Triangle(p3, p1, point).area()
         return (area1 + area2 + area3) == this.area()
     }
 
-    override fun getPoints(): List<ArrayPoint> = mutableListOf(p1,p2,p3)
+    override fun getPoints(): List<ArrayPoint> = mutableListOf(p1, p2, p3)
 
     override fun area(): Double {
         // Heron's Formula

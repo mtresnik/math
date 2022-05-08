@@ -1,6 +1,6 @@
 package com.resnik.math.symbo.algebra.operation
 
-class Variable(val name : String) : Operation() {
+class Variable(val name: String) : Operation() {
 
     override fun isConstant(): Boolean = false
 

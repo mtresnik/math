@@ -2,6 +2,7 @@ package com.resnik.math.stats.interpolation
 
 import com.resnik.math.linear.array.ArrayPoint2d
 import com.resnik.math.plot.Plot2d
+import org.junit.Ignore
 import org.junit.Test
 import javax.swing.ImageIcon
 import javax.swing.JLabel
@@ -37,6 +38,7 @@ class TestInterpolation {
         println(quadratic.det)
     }
 
+    @Ignore
     @Test
     fun testQuadraticGraph(){
         val p1 = ArrayPoint2d(8.0, 6.0)

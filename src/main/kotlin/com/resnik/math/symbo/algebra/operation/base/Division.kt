@@ -12,13 +12,14 @@ class Division(values: Array<Operation>) : Operation(*values) {
     constructor(o1: Operation, o2: Operation, vararg oN: Operation) : this(require2(o1, o2, *oN))
 
     override fun toConstant(): Constant {
-        if(!isConstant()){
+        if (!isConstant()) {
             return Constant.NaN
         }
         return Constant(numerator.toConstant().value / Multiplication(require1(denominator, *rem)).toConstant().value)
     }
 
-    override fun toNonConstantString(): String = "((" + numerator.toString() + ") / (" + Multiplication(require1(denominator, *rem)).toString() + "))"
+    override fun toNonConstantString(): String =
+        "((" + numerator.toString() + ") / (" + Multiplication(require1(denominator, *rem)).toString() + "))"
 
     override fun generate(values: Array<Operation>): Operation = Division(values)
 

@@ -3,6 +3,7 @@ package com.resnik.math.optimize
 import com.resnik.math.linear.array.ArrayMatrix
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayVector
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 import kotlin.math.abs
@@ -43,10 +44,12 @@ class TestMinimize {
         println(min)
     }
 
+    @Ignore
     @Test
     fun testMinimize10() {
+        // Ignored because of heapSize
         val func1 : (list : ArrayPoint) -> Double = { point->
-            point.values.sumByDouble { abs(it) }
+            point.values.sumOf { abs(it) }
         }
         val minList = mutableListOf<ImmutableDimensionClassifier>()
         repeat(5){

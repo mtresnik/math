@@ -4,6 +4,6 @@ import com.resnik.math.linear.array.ArrayPoint
 
 interface Minimizer {
 
-    fun minimize(func1 : (list : ArrayPoint) -> Double) : ArrayPoint
+    fun minimize(func1: (list: ArrayPoint) -> Double): ArrayPoint
 
 }

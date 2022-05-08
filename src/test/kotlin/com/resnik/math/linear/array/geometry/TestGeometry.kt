@@ -2,11 +2,13 @@ package com.resnik.math.linear.array.geometry
 
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayPoint2d
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 
 class TestGeometry {
 
+    @Ignore
     @Test
     fun testShapeCollection(){
         val shapeCollection = ShapeCollection(width = 500, height = 500, pointRadius = 10)

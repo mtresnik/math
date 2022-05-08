@@ -2,7 +2,7 @@ package com.resnik.math.linear.tensor
 
 import com.resnik.math.symbo.algebra.operation.Operation
 
-class Point(vararg val values : Operation) {
+open class Point(vararg val values: Operation) {
 
     val dim = values.size
 
@@ -14,17 +14,17 @@ class Point(vararg val values : Operation) {
 
     fun w(): Operation = this[3]
 
-    operator fun minus(other: Point) : Vector = Vector(Array(dim){ this[it] - other[it]})
+    operator fun minus(other: Point): Vector = Vector(Array(dim) { this[it] - other[it] })
 
-    operator fun plus(other: Vector) : Point = Point(*Array(dim){ this[it] + other[it].value})
+    operator fun plus(other: Vector): Point = Point(*Array(dim) { this[it] + other[it].value })
 
     open fun distanceTo(other: Point): Scalar = (this - other).magnitude()
 
     fun distanceTo(p1: Point, p2: Point): Scalar = p1.distanceTo(p2)
 
-    fun toVector() : Vector = Vector(Array(dim){ this[it]})
+    fun toVector(): Vector = Vector(Array(dim) { this[it] })
 
-    fun cross(p1: Point, p2: Point) : Operation {
+    fun cross(p1: Point, p2: Point): Operation {
         val thisX = this.x()
         val thisY = this.y()
         val x1 = p1.x()
@@ -34,7 +34,7 @@ class Point(vararg val values : Operation) {
         return (x2 - x1) * (thisY - y1) - (y2 - y1) * (thisX - x1)
     }
 
-    operator fun get(index: Int) : Operation = values[index]
+    operator fun get(index: Int): Operation = values[index]
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

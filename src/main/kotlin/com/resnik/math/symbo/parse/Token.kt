@@ -1,6 +1,11 @@
 package com.resnik.math.symbo.parse
 
-class Token<TOKEN_TYPE> @JvmOverloads constructor(var startIndex: Int, var endIndex: Int, var type: TOKEN_TYPE, var rep: String? = null) {
+class Token<TOKEN_TYPE> @JvmOverloads constructor(
+    var startIndex: Int,
+    var endIndex: Int,
+    var type: TOKEN_TYPE,
+    var rep: String? = null
+) {
 
     fun convert(t: TOKEN_TYPE): Token<TOKEN_TYPE> {
         return Token(startIndex, endIndex, t, rep)

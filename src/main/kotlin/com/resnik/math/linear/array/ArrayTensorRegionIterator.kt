@@ -6,14 +6,14 @@ import java.util.*
 
 class ArrayTensorRegionIterator : Iterator<ArrayTensor> {
 
-    lateinit var tensor : ArrayTensor
-    lateinit var regionSizes : IntArray
-    lateinit var bottomCorner : IntArray
-    lateinit var topCorner : IntArray
+    lateinit var tensor: ArrayTensor
+    lateinit var regionSizes: IntArray
+    lateinit var bottomCorner: IntArray
+    lateinit var topCorner: IntArray
 
     var coordIterator: ArrayTensorCoordIteratorInterface
 
-    constructor(tensor: ArrayTensor, regionSizes : IntArray, padding: IntArray = IntArray(0)) {
+    constructor(tensor: ArrayTensor, regionSizes: IntArray, padding: IntArray = IntArray(0)) {
         init(tensor, regionSizes, padding)
         this.coordIterator = ArrayTensorCoordIterator(
             ArrayTensorRegion(
@@ -23,7 +23,12 @@ class ArrayTensorRegionIterator : Iterator<ArrayTensor> {
         )
     }
 
-    constructor(tensor: ArrayTensor, regionSizes : IntArray, padding: IntArray = IntArray(0), strides : IntArray = IntArray(0)){
+    constructor(
+        tensor: ArrayTensor,
+        regionSizes: IntArray,
+        padding: IntArray = IntArray(0),
+        strides: IntArray = IntArray(0)
+    ) {
         init(tensor, regionSizes, padding)
         this.coordIterator = ArrayTensorStrideCoordIterator(
             ArrayTensorRegion(
@@ -34,23 +39,28 @@ class ArrayTensorRegionIterator : Iterator<ArrayTensor> {
         )
     }
 
-    fun init(tensor: ArrayTensor, regionSizes : IntArray, padding: IntArray = IntArray(0)){
+    fun init(tensor: ArrayTensor, regionSizes: IntArray, padding: IntArray = IntArray(0)) {
         this.tensor = tensor
         var regionSizesCopy = regionSizes
-        if(regionSizesCopy.size < tensor.dim.size()){
+        if (regionSizesCopy.size < tensor.dim.size()) {
             regionSizesCopy = regionSizes.copyOf(tensor.dim.size())
             Arrays.fill(regionSizesCopy, regionSizes.size, regionSizesCopy.size, 1)
         }
-        regionSizesCopy.indices.forEach { regionSizesCopy[it] -- }
+        regionSizesCopy.indices.forEach { regionSizesCopy[it]-- }
         this.regionSizes = regionSizesCopy
-        this.bottomCorner = IntArray(tensor.dim.size()){-padding.getOrDefault(it, 0)}
+        this.bottomCorner = IntArray(tensor.dim.size()) { -padding.getOrDefault(it, 0) }
         println("TensorDim: ${tensor.dim} \t RegionDim: ${regionSizes.contentToString()}")
-        this.topCorner = IntArray(tensor.dim.size()){tensor.dim.values.getOrDefault(it, 0) - regionSizes.getOrDefault(it, 0) + padding.getOrDefault(it, 0)}
+        this.topCorner = IntArray(tensor.dim.size()) {
+            tensor.dim.values.getOrDefault(it, 0) - regionSizes.getOrDefault(
+                it,
+                0
+            ) + padding.getOrDefault(it, 0)
+        }
     }
 
-    fun numTraversed() : Int = coordIterator.numTraversed()
+    fun numTraversed(): Int = coordIterator.numTraversed()
 
-    fun coords() : IntArray = coordIterator.coords()
+    fun coords(): IntArray = coordIterator.coords()
 
     override fun hasNext(): Boolean = coordIterator.hasNext()
 

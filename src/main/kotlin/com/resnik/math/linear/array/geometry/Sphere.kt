@@ -4,9 +4,9 @@ import com.resnik.math.linear.array.ArrayPoint
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-class Sphere(val center : ArrayPoint, radius : Double) : Shape3d<Sphere> {
+class Sphere(val center: ArrayPoint, radius: Double) : Shape3d<Sphere> {
 
-    val radius : Double = radius.absoluteValue
+    val radius: Double = radius.absoluteValue
 
     override fun volume(): Double = (4.0 / 3.0) * Math.PI * radius.pow(3)
 

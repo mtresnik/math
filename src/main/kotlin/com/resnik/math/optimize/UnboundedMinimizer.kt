@@ -3,21 +3,27 @@ package com.resnik.math.optimize
 import com.resnik.math.linear.array.ArrayPoint
 import com.resnik.math.linear.array.ArrayVector
 
-class UnboundedMinimizer(val numDimensions : Int,
-                         val numDirections : Int = numDimensions,
-                         val numIterations : Int = 100,
-                         val stepSize : Double = 10.0,
-                         val numSteps : Int = 10) : Minimizer {
+class UnboundedMinimizer(
+    val numDimensions: Int,
+    val numDirections: Int = numDimensions,
+    val numIterations: Int = 100,
+    val stepSize: Double = 10.0,
+    val numSteps: Int = 10
+) : Minimizer {
 
-    fun genDirections() : MutableList<ArrayVector> {
+    fun genDirections(): MutableList<ArrayVector> {
         // Generate I number of directions to choose from
         // Complexity: I * D
-        return MutableList(numDirections){ArrayVector.randomGaussian(numDimensions)}
+        return MutableList(numDirections) { ArrayVector.randomGaussian(numDimensions) }
     }
 
-    fun genSeed() : ArrayPoint = ArrayPoint.randomGaussian(numDimensions)
+    fun genSeed(): ArrayPoint = ArrayPoint.randomGaussian(numDimensions)
 
-    fun getNextPoint(currPoint : ArrayPoint, directions : MutableList<ArrayVector>, func1: (list: ArrayPoint) -> Double) : ArrayPoint {
+    fun getNextPoint(
+        currPoint: ArrayPoint,
+        directions: MutableList<ArrayVector>,
+        func1: (list: ArrayPoint) -> Double
+    ): ArrayPoint {
         // Clone directions into a step size oriented set, for big and small hops to see which has lower value
         var stepSizeOriented = mutableListOf<ArrayVector>()
         repeat(numSteps) {

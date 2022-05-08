@@ -4,15 +4,15 @@ import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
 
-class Multiplication(values : Array<Operation>) : Operation(*values){
+class Multiplication(values: Array<Operation>) : Operation(*values) {
 
-    constructor(o1: Operation, o2: Operation, vararg oN: Operation) : this(require2(o1,o2,*oN))
+    constructor(o1: Operation, o2: Operation, vararg oN: Operation) : this(require2(o1, o2, *oN))
 
     override fun toConstant(): Constant {
-        if(!isConstant()){
-           return Constant.NaN
+        if (!isConstant()) {
+            return Constant.NaN
         }
-        var ret : Constant = Constant.ONE
+        var ret: Constant = Constant.ONE
         this.values.indices.forEach {
             ret = Constant(ret.value * this.values[it].toConstant().value)
         }

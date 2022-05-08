@@ -3,8 +3,11 @@ package com.resnik.math.symbo.algebra.parse.intermediate
 import com.resnik.math.symbo.algebra.parse.SymbolicTokenType
 import com.resnik.math.symbo.parse.Token
 
-abstract class SymbolicIntermediateOperator(startIndex: Int, endIndex: Int, var operations: MutableList<SymbolicIntermediateOperation>)
-    : SymbolicIntermediateOperation(startIndex, endIndex, yokeAll(operations)) {
+abstract class SymbolicIntermediateOperator(
+    startIndex: Int,
+    endIndex: Int,
+    var operations: MutableList<SymbolicIntermediateOperation>
+) : SymbolicIntermediateOperation(startIndex, endIndex, yokeAll(operations)) {
 
     companion object {
         fun yokeAll(operations: MutableList<SymbolicIntermediateOperation>): MutableList<Token<SymbolicTokenType?>> {

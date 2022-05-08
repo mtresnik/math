@@ -5,6 +5,7 @@ import com.resnik.math.plot.Histogram
 import com.resnik.math.plot.HistogramData
 import com.resnik.math.plot.Plot2d
 import com.resnik.math.util.CountList
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 import javax.swing.ImageIcon
@@ -15,6 +16,7 @@ import kotlin.math.exp
 import kotlin.math.pow
 import kotlin.math.sqrt
 
+@Ignore
 class TestDistribution {
 
     @Test

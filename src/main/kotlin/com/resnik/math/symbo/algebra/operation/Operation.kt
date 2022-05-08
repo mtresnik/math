@@ -21,23 +21,23 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
         return true
     }
 
-    operator fun plus(other: Double) : Operation = this + Constant(other)
+    operator fun plus(other: Double): Operation = this + Constant(other)
 
     override fun plus(other: Operation): Operation = Addition(this, other)
 
-    operator fun minus(other: Double) : Operation = this - Constant(other)
+    operator fun minus(other: Double): Operation = this - Constant(other)
 
     override fun minus(other: Operation): Operation = Subtraction(this, other)
 
-    operator fun times(other: Double) : Operation = this * Constant(other)
+    operator fun times(other: Double): Operation = this * Constant(other)
 
     override fun times(other: Operation): Operation = Multiplication(this, other)
 
-    operator fun div(other : Double) : Operation = this / Constant(other)
+    operator fun div(other: Double): Operation = this / Constant(other)
 
     override fun div(other: Operation): Operation = Division(this, other)
 
-    fun pow(other : Double) : Operation = this.pow(Constant(other))
+    fun pow(other: Double): Operation = this.pow(Constant(other))
 
     override fun pow(other: Operation): Operation = Power(this, other)
 
@@ -77,7 +77,7 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
                 }
             }
         }
-        retArray = Array(varList.size){varList[it]}
+        retArray = Array(varList.size) { varList[it] }
         Arrays.sort(retArray) { t, t1 -> t.name.compareTo(t1.name) }
         return retArray
     }
@@ -85,13 +85,13 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
     fun evaluate(t: Operation): Operation = evaluate(Variable.X, t)
 
     fun evaluate(variable: Variable, value: Operation): Operation {
-        if(variable !in this){
+        if (variable !in this) {
             return this
         }
-        if(this is Variable && this == variable){
+        if (this is Variable && this == variable) {
             return value
         }
-        val newValues = Array<Operation>(this.values.size){
+        val newValues = Array<Operation>(this.values.size) {
             this.values[it].evaluate(variable, value)
         }
         return generate(newValues)
@@ -105,20 +105,20 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
         return evaluate(variable, value.asComplex())
     }
 
-    operator fun set(variable: Variable, value : Double) : Operation = evaluate(variable, value)
+    operator fun set(variable: Variable, value: Double): Operation = evaluate(variable, value)
 
-    operator fun set(variable: Variable, value: ComplexNumber) : Operation = evaluate(variable, value)
+    operator fun set(variable: Variable, value: ComplexNumber): Operation = evaluate(variable, value)
 
-    operator fun set(variable: Variable, value: Operation) : Operation = evaluate(variable, value)
+    operator fun set(variable: Variable, value: Operation): Operation = evaluate(variable, value)
 
-    fun evaluateReal(real : Double) : Operation = this.evaluate(Constant(ComplexNumber(real)))
+    fun evaluateReal(real: Double): Operation = this.evaluate(Constant(ComplexNumber(real)))
 
     abstract fun generate(values: Array<Operation>): Operation
 
-    fun wrap() : Parentheses = Parentheses(this)
+    fun wrap(): Parentheses = Parentheses(this)
 
     override fun toString(): String {
-        if(this.isConstant()){
+        if (this.isConstant()) {
             return this.toConstant().toString()
         }
         return this.toNonConstantString()

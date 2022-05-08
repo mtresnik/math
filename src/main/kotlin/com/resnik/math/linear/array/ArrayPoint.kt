@@ -17,9 +17,10 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
 
     fun w(): Double = this[3]
 
-    operator fun plus(other: ArrayVector) : ArrayPoint = other + this
+    operator fun plus(other: ArrayVector): ArrayPoint = other + this
 
-    operator fun minus(other: ArrayPoint) : ArrayVector = ArrayVector(*values.zip(other.values) { a, b -> a - b }.toDoubleArray())
+    operator fun minus(other: ArrayPoint): ArrayVector =
+        ArrayVector(*values.zip(other.values) { a, b -> a - b }.toDoubleArray())
 
     open fun distanceTo(other: ArrayPoint): Double = (this - other).magnitude()
 
@@ -30,11 +31,11 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
 
     fun leftOf(p1: ArrayPoint, p2: ArrayPoint): Boolean = (compareTo(p1, p2) == +1)
 
-    fun toVector() : ArrayVector = ArrayVector(*this.values)
+    fun toVector(): ArrayVector = ArrayVector(*this.values)
 
-    fun toVector3d() : ArrayVector = ArrayVector(*DoubleArray(3){if (it < values.size) values[it] else 0.0})
+    fun toVector3d(): ArrayVector = ArrayVector(*DoubleArray(3) { if (it < values.size) values[it] else 0.0 })
 
-    fun cross(p1: ArrayPoint, p2: ArrayPoint) : Double {
+    fun cross(p1: ArrayPoint, p2: ArrayPoint): Double {
         val thisX = this.x()
         val thisY = this.y()
         val x1 = p1.x()
@@ -44,29 +45,30 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
         return (x2 - x1) * (thisY - y1) - (y2 - y1) * (thisX - x1)
     }
 
-    fun to2d() : ArrayPoint2d = ArrayPoint2d(x(), y())
+    fun to2d(): ArrayPoint2d = ArrayPoint2d(x(), y())
 
-    fun to3d() : ArrayPoint3d = ArrayPoint3d(x(), y(), z())
+    fun to3d(): ArrayPoint3d = ArrayPoint3d(x(), y(), z())
 
     override fun compareTo(other: ArrayPoint): Int {
-        values.forEachIndexed{ index, value ->
-            if(value != other.values[index]){
+        values.forEachIndexed { index, value ->
+            if (value != other.values[index]) {
                 return value.compareTo(other.values[index])
             }
         }
         return 0
     }
 
-    fun compareTo(p1: ArrayPoint, p2: ArrayPoint) : Int {
+    fun compareTo(p1: ArrayPoint, p2: ArrayPoint): Int {
         val res = cross(p1, p2)
-        if(res < 0){
+        if (res < 0) {
             return -1
-        }else if(res > 0){
+        } else if (res > 0) {
             return +1
         }
         return 0
     }
-    operator fun get(index: Int) : Double = values[index]
+
+    operator fun get(index: Int): Double = values[index]
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -81,10 +83,10 @@ open class ArrayPoint(vararg val values: Double) : Comparable<ArrayPoint> {
 
     companion object {
 
-        private val random : Random = Random()
+        private val random: Random = Random()
 
-        fun randomGaussian(size: Int) : ArrayPoint {
-            return ArrayPoint(*DoubleArray(size){ random.nextGaussian()})
+        fun randomGaussian(size: Int): ArrayPoint {
+            return ArrayPoint(*DoubleArray(size) { random.nextGaussian() })
         }
 
     }

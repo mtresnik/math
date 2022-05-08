@@ -1,16 +1,16 @@
 package com.resnik.math.linear.array
 
-class ArrayTensorIndex(vararg val values : Int) {
+class ArrayTensorIndex(vararg val values: Int) {
 
-    operator fun get(index : Int) : Int = values[index]
+    operator fun get(index: Int): Int = values[index]
 
-    operator fun set(index : Int, value : Int) {
+    operator fun set(index: Int, value: Int) {
         values[index] = value
     }
 
-    fun size() : Int = values.size
+    fun size(): Int = values.size
 
-    fun toInt(dim: ArrayDimension) : Int {
+    fun toInt(dim: ArrayDimension): Int {
         var sum = 0
         var product = 1
         values.indices.forEach {
@@ -24,7 +24,7 @@ class ArrayTensorIndex(vararg val values : Int) {
         var ret = "("
         values.indices.forEach {
             ret += values[it]
-            if(it < values.lastIndex){
+            if (it < values.lastIndex) {
                 ret += " , "
             }
         }
@@ -34,7 +34,7 @@ class ArrayTensorIndex(vararg val values : Int) {
     companion object {
 
         @JvmStatic
-        fun fromInt(index : Int, dim : ArrayDimension) : ArrayTensorIndex {
+        fun fromInt(index: Int, dim: ArrayDimension): ArrayTensorIndex {
             var remainder = index
             val ret = IntArray(dim.size())
             ret.indices.forEach {

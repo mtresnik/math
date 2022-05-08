@@ -5,7 +5,7 @@ import com.resnik.math.minus
 import com.resnik.math.plus
 import com.resnik.math.times
 
-class ArrayTensorStrideCoordIterator(region : ArrayTensorRegion, val strides : IntArray) :
+class ArrayTensorStrideCoordIterator(region: ArrayTensorRegion, val strides: IntArray) :
     ArrayTensorCoordIteratorInterface {
 
     val corner1 = region.first.values

@@ -2,12 +2,14 @@ package com.resnik.math.stats
 
 import com.resnik.math.plot.Histogram
 import com.resnik.math.plot.HistogramData
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 import javax.swing.ImageIcon
 import javax.swing.JLabel
 import javax.swing.JOptionPane
 
+@Ignore
 class TestDice {
 
     @Test

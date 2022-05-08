@@ -2,8 +2,8 @@ package com.resnik.math.linear.array
 
 interface ArrayTensorCoordIteratorInterface : Iterator<IntArray> {
 
-    fun numTraversed() : Int
+    fun numTraversed(): Int
 
-    fun coords() : IntArray
+    fun coords(): IntArray
 
 }

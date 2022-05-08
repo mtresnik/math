@@ -4,15 +4,15 @@ import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
 
-class Power(values : Array<Operation>) : Operation(*values){
+class Power(values: Array<Operation>) : Operation(*values) {
 
-    val base : Operation = values[0]
-    val exponent : Operation = values[1]
+    val base: Operation = values[0]
+    val exponent: Operation = values[1]
 
-    constructor(base : Operation, exponent : Operation) : this(mutableListOf<Operation>(base, exponent).toTypedArray())
+    constructor(base: Operation, exponent: Operation) : this(mutableListOf<Operation>(base, exponent).toTypedArray())
 
     override fun isConstant(): Boolean {
-        if(exponent.isConstant() && exponent.toConstant() == Constant.ZERO){
+        if (exponent.isConstant() && exponent.toConstant() == Constant.ZERO) {
             return true
         }
         return base.isConstant() && exponent.isConstant()

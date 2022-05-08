@@ -4,18 +4,20 @@ import com.resnik.math.linear.array.ArrayPoint
 import java.lang.Double.max
 import java.lang.Double.min
 
-class BruteForceMinimizer(val classifiers : List<ImmutableDimensionClassifier>,
-                          val iterSize : Int = 10,
-                          val numTake : Int = 10,
-                          val numSubMinimizers : Int = 5) : Minimizer {
+class BruteForceMinimizer(
+    val classifiers: List<ImmutableDimensionClassifier>,
+    val iterSize: Int = 10,
+    val numTake: Int = 10,
+    val numSubMinimizers: Int = 5
+) : Minimizer {
 
-    private fun uniformScaled(t : Double) : ArrayPoint {
+    private fun uniformScaled(t: Double): ArrayPoint {
         val retList = mutableListOf<Double>()
-        classifiers.forEach{retList.add(it.scaled(t))}
+        classifiers.forEach { retList.add(it.scaled(t)) }
         return ArrayPoint(*retList.toDoubleArray())
     }
 
-    private fun generateGrid() : List<ArrayPoint> {
+    private fun generateGrid(): List<ArrayPoint> {
         val numDimensions = classifiers.size
         var runningList = mutableListOf<MutableList<Double>>()
         repeat(iterSize) {
@@ -43,13 +45,13 @@ class BruteForceMinimizer(val classifiers : List<ImmutableDimensionClassifier>,
         return runningList.map { ArrayPoint(*it.toDoubleArray()) }
     }
 
-    fun generateClassifiers(points : List<ArrayPoint>) : List<ImmutableDimensionClassifier> {
+    fun generateClassifiers(points: List<ArrayPoint>): List<ImmutableDimensionClassifier> {
         val retList = mutableListOf<MutableDimensionClassifier>()
-        repeat(classifiers.size) { dim ->
+        repeat(classifiers.size) {
             // Set initial values of each min / max combo
-            retList.add(MutableDimensionClassifier(Double.MAX_VALUE, -1.0  * Double.MAX_VALUE))
+            retList.add(MutableDimensionClassifier(Double.MAX_VALUE, -1.0 * Double.MAX_VALUE))
         }
-        points.forEach{ point ->
+        points.forEach { point ->
             // Iterate over dimensions, and bound on dimensions
             repeat(classifiers.size) { dim ->
                 retList[dim].min = min(retList[dim].min, point[dim])
@@ -60,12 +62,12 @@ class BruteForceMinimizer(val classifiers : List<ImmutableDimensionClassifier>,
         return retList.map { it.toImmutableDimensionClassifier() }
     }
 
-    override fun minimize(function: (list: ArrayPoint) -> Double): ArrayPoint {
+    override fun minimize(func1: (list: ArrayPoint) -> Double): ArrayPoint {
         // Minimize using bounding boxes of multiple dimensions
         // Make a grid in multiple dimensions
         // Then make a new classifier under this one using a generated list of classifiers (bounding box)
         val newPoints = generateGrid()
-            .map { DataPoint(it, function(it)) }
+            .map { DataPoint(it, func1(it)) }
             .sortedBy { it.result }
             .take(numTake)
             .map { it.input }
@@ -75,7 +77,7 @@ class BruteForceMinimizer(val classifiers : List<ImmutableDimensionClassifier>,
             val newClassifiers = generateClassifiers(currPoints)
             val subBruteForceMinimizer = BruteForceMinimizer(newClassifiers)
             currPoints = subBruteForceMinimizer.generateGrid()
-                .map { DataPoint(it, function(it)) }
+                .map { DataPoint(it, func1(it)) }
                 .sortedBy { it.result }.map { it.input }.take(numTake)
         }
         return currPoints.first()

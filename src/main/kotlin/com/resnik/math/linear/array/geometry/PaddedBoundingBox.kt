@@ -2,7 +2,7 @@ package com.resnik.math.linear.array.geometry
 
 import com.resnik.math.linear.array.ArrayPoint
 
-class PaddedBoundingBox(vararg points : ArrayPoint) : BoundingBox(*points) {
+class PaddedBoundingBox(vararg points: ArrayPoint) : BoundingBox(*points) {
 
     var minXPadding = 0.0
     var maxXPadding = 0.0

@@ -2,12 +2,12 @@ package com.resnik.math.linear.array.geometry
 
 import com.resnik.math.linear.array.ArrayPoint
 
-class ConcaveHull(vararg val points : ArrayPoint) : Shape2d<ConcaveHull> {
+class ConcaveHull(vararg val points: ArrayPoint) : Shape2d<ConcaveHull> {
 
-    val boundingBox : BoundingBox = BoundingBox(*Array<ArrayPoint>(points.size){points[it]})
+    val boundingBox: BoundingBox = BoundingBox(*Array<ArrayPoint>(points.size) { points[it] })
 
-    override fun contains(point : ArrayPoint): Boolean {
-        if(!boundingBox.contains(point)){
+    override fun contains(point: ArrayPoint): Boolean {
+        if (!boundingBox.contains(point)) {
             return false
         }
         val x = point.x()
@@ -18,7 +18,8 @@ class ConcaveHull(vararg val points : ArrayPoint) : Shape2d<ConcaveHull> {
         var j = points.size - 1
         while (i < points.size) {
             if (points[i].y() > y != points[j].y() > y &&
-                    x < (points[j].x() - points[i].x()) * (y - points[i].y()) / (points[j].y() - points[i].y()) + points[i].x()) {
+                x < (points[j].x() - points[i].x()) * (y - points[i].y()) / (points[j].y() - points[i].y()) + points[i].x()
+            ) {
                 inside = !inside
             }
             j = i++

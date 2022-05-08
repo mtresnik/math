@@ -1,16 +1,17 @@
 package com.resnik.math.stats.distributions
 
-open class ContinuousDistribution(val pdf : Function1<Double, Double>,
-                                  center : Double = 0.0,
-                                  range : Double = 100.0,
-                                  numPoints : Int = 1000)
-    : Distribution<Double> {
+open class ContinuousDistribution(
+    val pdf: Function1<Double, Double>,
+    center: Double = 0.0,
+    range: Double = 100.0,
+    numPoints: Int = 1000
+) : Distribution<Double> {
 
     private val pdfMap = mutableMapOf<Double, Double>()
-    private val internalDiscreteDistribution : DiscreteDistribution<Double>
+    private val internalDiscreteDistribution: DiscreteDistribution<Double>
 
     init {
-        if(numPoints < 2){
+        if (numPoints < 2) {
             pdfMap[center] = pdf(center)
         } else {
             val min = center - range

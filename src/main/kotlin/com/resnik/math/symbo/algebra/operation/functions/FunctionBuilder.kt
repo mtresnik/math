@@ -3,12 +3,12 @@ package com.resnik.math.symbo.algebra.operation.functions
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
 import com.resnik.math.symbo.algebra.operation.Variable
-import java.util.LinkedHashMap
 import java.util.function.Function
 
 object FunctionBuilder {
 
-    var generationMap: MutableMap<String, Function<Void?, Operation>> = LinkedHashMap<String, Function<Void?, Operation>>()
+    var generationMap: MutableMap<String, Function<Void?, Operation>> =
+        LinkedHashMap<String, Function<Void?, Operation>>()
     var paramsMap: MutableMap<String, Array<Variable>> = LinkedHashMap<String, Array<Variable>>()
 
     fun substitute(name: String): Operation {
@@ -31,7 +31,9 @@ object FunctionBuilder {
         if (generationMap.containsKey(name)) {
             return
         }
-        require(inner.apply(null).getVariables().size == params.size) { "Please define inner variables for function:$name" }
+        require(
+            inner.apply(null).getVariables().size == params.size
+        ) { "Please define inner variables for function:$name" }
         generationMap[name] = inner
         paramsMap[name] = params
     }

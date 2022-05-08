@@ -5,7 +5,10 @@ import com.resnik.math.symbo.parse.TokenizationException
 
 class SymbolicTokenizer {
 
-    fun tokenize(inputStringParam: String?, functions: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType?>> {
+    fun tokenize(
+        inputStringParam: String?,
+        functions: Map<String, SymbolicTokenType>
+    ): MutableList<Token<SymbolicTokenType?>> {
         var inputString = inputStringParam
         inputString = preProcess(inputString)
         val numbers: MutableList<Token<SymbolicTokenType>> = tokenizeNumbers(inputString)
@@ -48,7 +51,10 @@ class SymbolicTokenizer {
         return retList
     }
 
-    fun tokenizeOperators(tokenList: MutableList<Token<SymbolicTokenType>>, inputString: String?): MutableList<Token<SymbolicTokenType>> {
+    fun tokenizeOperators(
+        tokenList: MutableList<Token<SymbolicTokenType>>,
+        inputString: String?
+    ): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>(tokenList)
         val arrayRep = inputString!!.toCharArray()
         retList.sortWith(Comparator.comparingInt { a: Token<SymbolicTokenType> -> a.startIndex })
@@ -65,7 +71,10 @@ class SymbolicTokenizer {
         return retList
     }
 
-    fun tokenizeParentheses(tokenList: MutableList<Token<SymbolicTokenType>>, inputString: String?): MutableList<Token<SymbolicTokenType>> {
+    fun tokenizeParentheses(
+        tokenList: MutableList<Token<SymbolicTokenType>>,
+        inputString: String?
+    ): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>(tokenList)
         val arrayRep = inputString!!.toCharArray()
         retList.sortWith(Comparator.comparingInt { a: Token<SymbolicTokenType> -> a.startIndex })
@@ -74,7 +83,11 @@ class SymbolicTokenizer {
                 continue
             }
             if (arrayRep[i] == OPEN_PARENTHESES || arrayRep[i] == CLOSED_PARENTHESES) {
-                val parenthesis: Token<SymbolicTokenType> = Token.singleIndex(i, if (arrayRep[i] == OPEN_PARENTHESES) SymbolicTokenType.OPEN_PARENTHESES else SymbolicTokenType.CLOSED_PARENTHESES, arrayRep[i])
+                val parenthesis: Token<SymbolicTokenType> = Token.singleIndex(
+                    i,
+                    if (arrayRep[i] == OPEN_PARENTHESES) SymbolicTokenType.OPEN_PARENTHESES else SymbolicTokenType.CLOSED_PARENTHESES,
+                    arrayRep[i]
+                )
                 retList.add(parenthesis)
             }
         }
@@ -82,7 +95,10 @@ class SymbolicTokenizer {
         return retList
     }
 
-    fun tokenizeText(tokenList: MutableList<Token<SymbolicTokenType>>, inputString: String?): MutableList<Token<SymbolicTokenType>> {
+    fun tokenizeText(
+        tokenList: MutableList<Token<SymbolicTokenType>>,
+        inputString: String?
+    ): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>(tokenList)
         val arrayRep = inputString!!.toCharArray()
         retList.sortWith(Comparator.comparingInt { a: Token<SymbolicTokenType> -> a.startIndex })
@@ -110,7 +126,10 @@ class SymbolicTokenizer {
         return retList
     }
 
-    fun tokenizeFunctions(tokenList: MutableList<Token<SymbolicTokenType>>, functions: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType>> {
+    fun tokenizeFunctions(
+        tokenList: MutableList<Token<SymbolicTokenType>>,
+        functions: Map<String, SymbolicTokenType>
+    ): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
         for (i in tokenList.indices) {
             val curr: Token<SymbolicTokenType> = tokenList[i]
@@ -154,7 +173,10 @@ class SymbolicTokenizer {
         return retList
     }
 
-    fun tokenizeVariables(tokenList: MutableList<Token<SymbolicTokenType>>, variableMap: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType>> {
+    fun tokenizeVariables(
+        tokenList: MutableList<Token<SymbolicTokenType>>,
+        variableMap: Map<String, SymbolicTokenType>
+    ): MutableList<Token<SymbolicTokenType>> {
         val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
         for (i in tokenList.indices) {
             val curr: Token<SymbolicTokenType> = tokenList[i]
@@ -191,8 +213,8 @@ class SymbolicTokenizer {
                 throw TokenizationException("Imbalanced number of parentheses.")
             }
             return inputString
-                    .replace(" ", "")
-                    .replace("\\(\\)".toRegex(), "")
+                .replace(" ", "")
+                .replace("\\(\\)".toRegex(), "")
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -203,7 +225,7 @@ class SymbolicTokenizer {
                 currList = collapsed
                 collapsed = collapseSigns(currList)
             }
-            val ret : MutableList<Token<SymbolicTokenType?>> = mutableListOf()
+            val ret: MutableList<Token<SymbolicTokenType?>> = mutableListOf()
             currList.forEach { ret.add(it as Token<SymbolicTokenType?>) }
             return ret
         }
@@ -215,7 +237,8 @@ class SymbolicTokenizer {
                 val next: Token<SymbolicTokenType>? = if (i < inputList.size - 1) inputList[i + 1] else null
                 retList.add(curr)
                 if ((curr.type === SymbolicTokenType.NUMBER || curr.type === SymbolicTokenType.VARIABLE || curr.type === SymbolicTokenType.CLOSED_PARENTHESES)
-                        && next != null && next.type !== SymbolicTokenType.OPERATOR && next.type !== SymbolicTokenType.CLOSED_PARENTHESES) {
+                    && next != null && next.type !== SymbolicTokenType.OPERATOR && next.type !== SymbolicTokenType.CLOSED_PARENTHESES
+                ) {
                     retList.add(Token.nullIndex(SymbolicTokenType.OPERATOR, MULT))
                 }
             }
@@ -229,7 +252,10 @@ class SymbolicTokenizer {
                 val curr: Token<SymbolicTokenType> = inputList[i]
                 val next: Token<SymbolicTokenType>? = if (i < inputList.size - 1) inputList[i + 1] else null
                 if (curr.type === SymbolicTokenType.OPERATOR && next != null && next.type === SymbolicTokenType.OPERATOR) {
-                    if ((curr.rep.equals(PLUS) || curr.rep.equals(MINUS)) && (next.rep.equals(PLUS) || next.rep.equals(MINUS))) {
+                    if ((curr.rep.equals(PLUS) || curr.rep.equals(MINUS)) && (next.rep.equals(PLUS) || next.rep.equals(
+                            MINUS
+                        ))
+                    ) {
                         if (curr.rep.equals(next.rep)) {
                             retList.add(Token.nullIndex(SymbolicTokenType.OPERATOR, PLUS))
                         } else {
@@ -255,7 +281,10 @@ class SymbolicTokenizer {
             return false
         }
 
-        fun maxVariables(inputString: String, variableMap: Map<String, SymbolicTokenType>): MutableList<Token<SymbolicTokenType>> {
+        fun maxVariables(
+            inputString: String,
+            variableMap: Map<String, SymbolicTokenType>
+        ): MutableList<Token<SymbolicTokenType>> {
             val retList: MutableList<Token<SymbolicTokenType>> = ArrayList<Token<SymbolicTokenType>>()
             var max: String? = null
             var maxCount = -1

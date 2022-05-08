@@ -2,6 +2,7 @@ package com.resnik.math.optimize
 
 import com.resnik.math.linear.array.ArrayMatrix
 import com.resnik.math.linear.array.ArrayVector
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 import java.awt.Graphics2D
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon
 import javax.swing.JLabel
 import javax.swing.JOptionPane
 
+@Ignore
 @Deprecated("Inefficient for non-linear optimizations compared to standard gradient models.")
 class TestNeuralMinimizer {
 
