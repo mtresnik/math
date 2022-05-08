@@ -24,17 +24,3 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
-
-task fatJar(type : Jar) {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    baseName = project.name + "-all"
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-tasks {
-    build {
-        dependsOn(fatJar)
-    }
-    assemble {}
-}
