@@ -15,8 +15,8 @@ publishing {
             name = "com-resnik-math"
             url = uri("https://maven.pkg.github.com/mtresnik/math")
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.token")
+                username = System.getenv("USERNAME") ?: project.findProperty("gpr.user")
+                password = System.getenv("TOKEN") ?: project.findProperty("gpr.token")
             }
         }
     }
