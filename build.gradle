@@ -7,7 +7,6 @@ plugins {
 }
 
 group 'com.resnik'
-version '1.0'
 
 publishing {
     repositories {
@@ -15,6 +14,7 @@ publishing {
             name = "com-resnik-math"
             url = uri("https://maven.pkg.github.com/mtresnik/math")
             credentials {
+                // Runner stored in env, else stored in ~/.gradle/gradle.properties
                 username = System.getenv("USERNAME") ?: project.findProperty("gpr.user")
                 password = System.getenv("TOKEN") ?: project.findProperty("gpr.token")
             }
