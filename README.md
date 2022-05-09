@@ -1,12 +1,84 @@
 # math
 
-A math utilities library made for use in kotlin.
+[![build status](https://github.com/mtresnik/math/actions/workflows/gradle.yml/badge.svg)](https://github.com/mtresnik/math/actions/workflows/gradle.yml/)
+[![version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/mtresnik/math/releases/tag/v1.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/mtresnik/math/blob/main/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
+<hr>
 
-To compile the project as a library, run:
-```console
-gradle assemble
+## Getting Started
+
+### Maven
+
+**~/.m2/settings.xml:**
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    ...
+  <activeProfiles>
+    <activeProfile>github</activeProfile>
+  </activeProfiles>
+    ...
+  <servers>
+    <server>
+      <id>github</id>
+      <username>GITHUB_USERNAME</username>
+      <password>GITHUB_PAT</password>
+    </server>
+  </servers>
+</settings>
 ```
-Or download the latest version source.
+
+**pom.xml:**
+```xml
+<repository>
+    <id>github</id>
+    <url>https://maven.pkg.github.com/mtresnik/math</url>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+...
+<dependency>
+    <groupId>com.resnik</groupId>
+    <artifactId>math</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### Gradle (groovy)
+
+**~/.gradle/gradle.properties:**
+```groovy
+gpr.user=GITHUB_USERNAME
+gpr.token=GITHUB_PAT
+```
+
+**build.gradle:**
+```groovy
+repositories {
+    ...
+    maven {
+        name="GitHubPackages"
+        url= uri("https://maven.pkg.github.com/mtresnik/math")
+        credentials {
+            // Runner stored in env, else stored in ~/.gradle/gradle.properties
+            username = System.getenv("USERNAME") ?: findProperty("gpr.user") ?: "<GITHUB_USERNAME>"
+            password = System.getenv("TOKEN") ?: findProperty("gpr.token")
+        }
+    }
+    ...
+}
+
+dependencies {
+    ...
+    compile "com.resnik:math:1.0.0"
+    ...
+}
+```
+<hr>
 
 ## linear
 
