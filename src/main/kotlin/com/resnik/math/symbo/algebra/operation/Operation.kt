@@ -29,6 +29,8 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
 
     override fun minus(other: Operation): Operation = Subtraction(this, other)
 
+    operator fun times(other: Int): Operation = this * Constant(other)
+
     operator fun times(other: Double): Operation = this * Constant(other)
 
     override fun times(other: Operation): Operation = Multiplication(this, other)
@@ -117,6 +119,8 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
 
     fun wrap(): Parentheses = Parentheses(this)
 
+    abstract fun getDerivative(respectTo: Variable): Operation
+
     override fun toString(): String {
         if (this.isConstant()) {
             return this.toConstant().toString()
@@ -125,6 +129,16 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
     }
 
     companion object {
+
+        fun formatSuper1(o1: Operation, vararg oN: Operation): Array<Operation> {
+            val retArray = Array<Operation>(1 + oN.size) { Constant.ZERO }
+            retArray[0] = o1
+            val count = 1
+            for (i in count until oN.size + count) {
+                retArray[i] = oN[i - count]
+            }
+            return retArray
+        }
 
         fun require1(o1: Operation, vararg oN: Operation): Array<Operation> {
             return Array(1 + oN.size) {

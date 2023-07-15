@@ -2,6 +2,7 @@ package com.resnik.math.symbo.algebra.operation.base
 
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
 
 class Parentheses(val inner: Operation) : Operation(inner) {
 
@@ -19,6 +20,10 @@ class Parentheses(val inner: Operation) : Operation(inner) {
             return Parentheses(Constant.ONE)
         }
         return Parentheses(values[0])
+    }
+
+    override fun getDerivative(respectTo: Variable): Operation {
+        return Parentheses(inner.getDerivative(respectTo))
     }
 
     fun unwrap(): Operation {

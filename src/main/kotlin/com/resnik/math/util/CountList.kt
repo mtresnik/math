@@ -4,7 +4,7 @@ import java.util.*
 
 open class CountList<T> : Iterable<Map.Entry<T, Int>> {
 
-    private val internalMap = TreeMap<T, Int>()
+    val internalMap = TreeMap<T, Int>()
 
     operator fun get(obj: T): Int = internalMap.getOrDefault(obj, 0)
 
@@ -39,5 +39,12 @@ open class CountList<T> : Iterable<Map.Entry<T, Int>> {
 
     fun max(): Int = internalMap.maxByOrNull { it.value }?.value ?: -1
 
+    fun clone(): CountList<T> {
+        val ret = CountList<T>()
+        this.internalMap.forEach { (obj, count) ->
+            ret.internalMap[obj] = count
+        }
+        return ret
+    }
 
 }

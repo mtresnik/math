@@ -3,6 +3,8 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
+
 
 class Multiplication(values: Array<Operation>) : Operation(*values) {
 
@@ -61,4 +63,24 @@ class Multiplication(values: Array<Operation>) : Operation(*values) {
     }
 
     override fun generate(values: Array<Operation>): Operation = Multiplication(values)
+    override fun getDerivative(respectTo: Variable): Operation {
+        val products: Array<Operation>
+        val productList: MutableList<Multiplication> = mutableListOf()
+        for (elem in values.indices) {
+            val valuesCopy = Array<Operation>(values.size) { Constant.ZERO }
+            for (subElem in values.indices) {
+                if (subElem == elem) {
+                    valuesCopy[subElem] = values[subElem].getDerivative(respectTo)
+                } else {
+                    valuesCopy[subElem] = values[subElem]
+                }
+            }
+            val currProduct = Multiplication(valuesCopy)
+            if (currProduct.toString() != Constant.ZERO.toString()) {
+                productList.add(currProduct)
+            }
+        }
+        products = productList.toTypedArray()
+        return Addition(products)
+    }
 }

@@ -4,6 +4,8 @@ import com.resnik.math.symbo.algebra.ComplexNumber
 
 class Constant(val value: ComplexNumber) : Operation() {
 
+    constructor(value: Int): this(value.toDouble())
+
     constructor(value: Double) : this(ComplexNumber(value))
 
     constructor(real: Double, imaginary: Double) : this(ComplexNumber(real, imaginary))
@@ -22,6 +24,9 @@ class Constant(val value: ComplexNumber) : Operation() {
     override fun isConstant(): Boolean = true
 
     override fun generate(values: Array<Operation>): Operation = Constant(this.value)
+    override fun getDerivative(respectTo: Variable): Operation {
+        return ZERO
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

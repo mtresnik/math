@@ -3,6 +3,7 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
 
 class Subtraction(values: Array<Operation>) : Operation(*values) {
 
@@ -12,9 +13,9 @@ class Subtraction(values: Array<Operation>) : Operation(*values) {
         if (!isConstant()) {
             return Constant.NaN
         }
-        var ret: Constant = Constant.ZERO
-        this.values.indices.forEach {
-            ret = Constant(ret.value + this.values[it].toConstant().value)
+        var ret: Constant = this.values.first().toConstant()
+        (1 .. this.values.lastIndex).forEach {
+            ret = Constant(ret.value - this.values[it].toConstant().value)
         }
         return ret
     }
@@ -49,6 +50,9 @@ class Subtraction(values: Array<Operation>) : Operation(*values) {
     }
 
     override fun generate(values: Array<Operation>): Operation = Addition(values)
+    override fun getDerivative(respectTo: Variable): Operation {
+        return Subtraction(this.values.map { value -> value.getDerivative(respectTo) }.toTypedArray())
+    }
 
     fun allValues(): List<Operation> {
         val retList: MutableList<Operation> = ArrayList()

@@ -2,6 +2,7 @@ package com.resnik.math.symbo.algebra.operation.base
 
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
 
 class Negation(val inner: Operation) : Operation(inner) {
 
@@ -19,6 +20,10 @@ class Negation(val inner: Operation) : Operation(inner) {
             return Negation(Constant.ONE)
         }
         return Negation(values.first())
+    }
+
+    override fun getDerivative(respectTo: Variable): Operation {
+        return Negation(inner.getDerivative(respectTo))
     }
 
 

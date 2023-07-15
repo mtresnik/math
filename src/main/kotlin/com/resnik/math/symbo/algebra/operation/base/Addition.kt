@@ -3,6 +3,7 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
 
 class Addition(values: Array<Operation>) : Operation(*values) {
 
@@ -58,6 +59,10 @@ class Addition(values: Array<Operation>) : Operation(*values) {
     }
 
     override fun generate(values: Array<Operation>): Operation = Addition(values)
+    override fun getDerivative(respectTo: Variable): Operation {
+        // Derivative of sum is sum of derivatives
+        return Addition(this.values.map { value -> value.getDerivative(respectTo) }.toTypedArray())
+    }
 
     fun allValues(): List<Operation> {
         val retList: MutableList<Operation> = ArrayList()

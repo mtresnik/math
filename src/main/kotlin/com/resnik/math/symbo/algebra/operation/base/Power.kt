@@ -3,6 +3,9 @@ package com.resnik.math.symbo.algebra.operation.base
 import com.resnik.math.symbo.algebra.ComplexNumber
 import com.resnik.math.symbo.algebra.operation.Constant
 import com.resnik.math.symbo.algebra.operation.Operation
+import com.resnik.math.symbo.algebra.operation.Variable
+import com.resnik.math.symbo.algebra.operation.functions.Log
+
 
 class Power(values: Array<Operation>) : Operation(*values) {
 
@@ -42,5 +45,26 @@ class Power(values: Array<Operation>) : Operation(*values) {
     }
 
     override fun generate(values: Array<Operation>): Operation = Power(values)
+    override fun getDerivative(respectTo: Variable): Operation {
+        val fx = base
+        val gx = exponent
+        val f1x = base.getDerivative(respectTo)
+        val g1x = exponent.getDerivative(respectTo)
+
+        val left: Operation = Multiplication(Log.ln(fx), g1x, Power(fx, gx))
+        val right: Operation = Multiplication(Power(fx, Subtraction(gx, Constant(1))), gx, f1x)
+        if (g1x is Constant) {
+            if (g1x.value == ComplexNumber.ZERO) {
+                return right
+            }
+        }
+        if (f1x is Constant) {
+            if (f1x.value == ComplexNumber.ZERO) {
+                return left
+            }
+        }
+
+        return Addition(left, right)
+    }
 
 }

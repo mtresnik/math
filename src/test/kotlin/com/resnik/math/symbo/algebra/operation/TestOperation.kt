@@ -2,9 +2,16 @@ package com.resnik.math.symbo.algebra.operation
 
 import com.resnik.math.symbo.algebra.operation.Constant.Companion.toConstant
 import com.resnik.math.symbo.algebra.operation.base.Addition
+import com.resnik.math.symbo.algebra.operation.base.Subtraction
 import org.junit.Test
 
 class TestOperation {
+
+    @Test
+    fun testSubtraction() {
+        val op1 = Subtraction(Constant(1), Constant(2))
+        println(op1)
+    }
 
     @Test
     fun testOperation1(){
