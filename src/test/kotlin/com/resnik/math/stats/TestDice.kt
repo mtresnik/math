@@ -13,6 +13,7 @@ import javax.swing.JOptionPane
 class TestDice {
 
     @Test
+    @Ignore
     fun testDice1(){
         val die = Die()
         val out = die.roll(20000)
@@ -25,6 +26,7 @@ class TestDice {
     }
 
     @Test
+    @Ignore
     fun testDice2(){
         val dice = Dice(2)
         val out = dice.roll(20000)
@@ -37,6 +39,7 @@ class TestDice {
     }
 
     @Test
+    @Ignore
     fun testDice3(){
         val dice = Dice(3)
         val out = dice.roll(20000)
@@ -49,6 +52,7 @@ class TestDice {
     }
 
     @Test
+    @Ignore
     fun testDiceN(){
         val dice = Dice(1000)
         val out = dice.roll(1000000)
@@ -61,6 +65,7 @@ class TestDice {
     }
 
     @Test
+    @Ignore
     fun testDice4(){
         val rollCount = 40000
         val binsize = 0.5
@@ -99,6 +104,7 @@ class TestDice {
     }
 
     @Test
+    @Ignore
     fun testDice5(){
         val rollCount = 40000
         val binsize = 0.5

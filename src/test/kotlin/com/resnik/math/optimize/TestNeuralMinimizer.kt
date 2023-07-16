@@ -17,6 +17,7 @@ import javax.swing.JOptionPane
 class TestNeuralMinimizer {
 
     @Test
+    @Ignore
     fun testNeuralMinimizer(){
         val unboundedGeneralMinimizer = UnboundedGeneralMinimizer(NeuralNetworkDataset(), numIterations = 2000)
         val best = unboundedGeneralMinimizer.minimize { it.error() }

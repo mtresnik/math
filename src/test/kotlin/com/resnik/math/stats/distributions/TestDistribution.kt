@@ -7,7 +7,6 @@ import com.resnik.math.plot.Plot2d
 import com.resnik.math.util.CountList
 import org.junit.Ignore
 import org.junit.Test
-import java.awt.Color
 import javax.swing.ImageIcon
 import javax.swing.JLabel
 import javax.swing.JOptionPane
@@ -20,6 +19,7 @@ import kotlin.math.sqrt
 class TestDistribution {
 
     @Test
+    @Ignore
     fun testDiscreteDistribution() {
         val map = mutableMapOf(Pair(1, 0.2), Pair(2, 0.3), Pair(3, 0.5))
         val distribution = DiscreteDistribution(map)
@@ -37,6 +37,7 @@ class TestDistribution {
     }
 
     @Test
+    @Ignore
     fun testContinuousDistribution() {
         val variance = 1.5
         val mean = 5.0
@@ -59,6 +60,7 @@ class TestDistribution {
     }
 
     @Test
+    @Ignore
     fun testNormal() {
         val variance = 1.5
         val mean = 5.0
@@ -76,6 +78,7 @@ class TestDistribution {
     }
 
     @Test
+    @Ignore
     fun testCompound() {
         val var1 = 2.0
         val mean1 = 40.0
@@ -104,8 +107,6 @@ class TestDistribution {
         val icon = ImageIcon(image)
         val label = JLabel(icon)
         JOptionPane.showMessageDialog(null, label)
-
-
     }
 
 }

@@ -38,8 +38,8 @@ class TestInterpolation {
         println(quadratic.det)
     }
 
-    @Ignore
     @Test
+    @Ignore
     fun testQuadraticGraph(){
         val p1 = ArrayPoint2d(8.0, 6.0)
         val p2 = ArrayPoint2d(9.0, 3.0)

@@ -18,8 +18,8 @@ class TestQuaternion {
         println(quat1 * quat2)
     }
 
-    @Ignore
     @Test
+    @Ignore
     fun testQuat2(){
         var boundingBox = BoundingBox(ArrayPoint(0.0,0.0), ArrayPoint(0.0, 1.0), ArrayPoint(1.0, 0.0), ArrayPoint(1.0, 1.0))
         val newBoundingBox = boundingBox.rotate(Math.PI/4, ArrayVector(0.0,0.0,1.0))
