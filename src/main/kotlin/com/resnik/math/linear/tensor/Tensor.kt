@@ -30,7 +30,7 @@ open class Tensor(val dims: TensorDimension, val init: (Int) -> Scalar = { Scala
         if (!this.isScalar()) {
             throw IllegalStateException("Not a Scalar")
         }
-        return Scalar()
+        return this as Scalar
     }
 
     fun isVector(): Boolean = this.rank() == 1

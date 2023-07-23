@@ -5,13 +5,18 @@ import kotlin.math.pow
 fun Double.sqrt(): Double = this.pow(0.5)
 
 fun DoubleArray.variance(): Double {
-    val mean = this.average()
+    return this.variance(this.average())
+}
+
+fun DoubleArray.variance(mean: Double): Double {
     return this.sumOf { (it - mean).pow(2) } / (this.size - 1)
 }
 
 fun DoubleArray.mean(): Double = this.average()
 
 fun DoubleArray.stddev(): Double = this.variance().sqrt()
+
+fun DoubleArray.stddev(mean: Double): Double = this.variance(mean).sqrt()
 
 fun DoubleArray.covariance(other: DoubleArray): Double {
     val n = this.size

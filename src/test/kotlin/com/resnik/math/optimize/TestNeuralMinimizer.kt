@@ -34,7 +34,6 @@ class TestNeuralMinimizer {
                 val y = row.toDouble() / (height - 1)
                 val z = best.feedForward(ArrayVector(x, y))[0].toFloat().coerceIn(0.0f, 1.0f)
                 image.setRGB(col, row, Color(z,z,z).rgb)
-
             }
         }
         graphics.dispose()

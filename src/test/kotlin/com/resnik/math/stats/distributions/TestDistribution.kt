@@ -103,7 +103,7 @@ class TestDistribution {
         combined.forEach { entry -> points.add(ArrayPoint2d(entry.key, entry.value.toDouble())) }
         val plot = Plot2d()
         plot.add(points)
-        val image = plot.plot(drawLines = false, drawPoints = true)
+        val image = plot.plot(connectPoints = false, drawPoints = true)
         val icon = ImageIcon(image)
         val label = JLabel(icon)
         JOptionPane.showMessageDialog(null, label)

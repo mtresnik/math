@@ -128,6 +128,10 @@ abstract class Operation(vararg val values: Operation) : Algebraic<Operation> {
         return this.toNonConstantString()
     }
 
+    fun pow(i: Int): Power {
+        return Power(this, Constant(i))
+    }
+
     companion object {
 
         fun formatSuper1(o1: Operation, vararg oN: Operation): Array<Operation> {
